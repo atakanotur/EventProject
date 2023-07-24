@@ -1,15 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, TextInput, TextStyle} from 'react-native';
+import {TextInputProps} from 'react-native';
 
-interface CustomInputProps {
+interface OwnProps {
+  label?: string;
   placeholder?: string;
-  onChangeText: (text: string) => void;
   style?: TextStyle;
 }
 
-const CustomInput = ({placeholder, onChangeText, style}: CustomInputProps) => {
-  const [value, setValue] = useState('');
+export type CustomInputProps = OwnProps & TextInputProps;
 
+const CustomInput = (props: CustomInputProps) => {
+  const {placeholder, style} = props;
+  const [value, setValue] = useState('');
   return (
     <View style={style}>
       <TextInput

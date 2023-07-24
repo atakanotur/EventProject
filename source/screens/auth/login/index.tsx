@@ -4,13 +4,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
 import {Button, Input, Text} from '../../../components';
-import {loginAsync} from '../../../store/auth';
+import {loginAsync, registerAsync} from '../../../store/auth';
 import {styles} from './styles';
 
 const LoginScreen = ({navigation}) => {
   const [loginState, setLoginState] = useState({
-    email: '',
-    password: '',
+    email: 'first@hotmail.com',
+    password: 'first',
+    firstName: 'first',
+    lastName: 'first',
   });
 
   const dispatch = useAppDispatch();
@@ -20,6 +22,7 @@ const LoginScreen = ({navigation}) => {
       ...loginState,
       email: e,
     });
+    console.log('email', loginState.email)
   };
 
   const onChangePassword = (e: string) => {
@@ -27,26 +30,27 @@ const LoginScreen = ({navigation}) => {
       ...loginState,
       password: e,
     });
+    console.log('password', loginState.password)
   };
 
   const login = () => {
-    dispatch(loginAsync(loginState));
+    dispatch(registerAsync(loginState));
   };
 
   return (
     <SafeAreaView style={styles.main}>
       <Text text="Login Screen" style={{color: 'red'}} />
-      {/* <Input
+      <Input
         placeholder="Email"
         onChangeText={e => onChangeEmail(e)}
-        style={{color: 'red'}}
+        style={styles.loginInput}
       />
       <Input
         placeholder="Password"
         onChangeText={e => onChangePassword(e)}
-        style={{color: 'red'}}
-      /> */}
-      <Button onPress={() => login()} text="Login" style={{color: 'red'}} />
+        style={styles.loginInput}
+      />
+      <Button onPress={() => login()} text="Login" style={styles.loginButton} />
     </SafeAreaView>
   );
 };

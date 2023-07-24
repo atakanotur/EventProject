@@ -7,7 +7,7 @@ import {
   UserForRegister,
 } from '../types';
 
-const baseUrl = 'http://localhost:7204/';
+const baseUrl = 'http://localhost:7204/api/';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: baseUrl,
@@ -32,7 +32,7 @@ const postResource = async (endpoint: string, data: any) => {
     const response = await axiosInstance.post(endpoint, data);
     return response.data;
   } catch (error) {
-    console.log('postResouce.error', error);
+    console.log('postResource.error', error);
     throw new Error(`Error posting resource to enpoint: ${endpoint}`);
   }
 };
