@@ -7,12 +7,11 @@ import {
   UserForRegister,
 } from '../types';
 
-const baseUrl = 'http://localhost:7204/api/';
+const baseUrl = 'http://10.0.2.2:8081/api';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: baseUrl,
   headers: {
-    Accept: 'application/json',
     'Content-Type': 'application/json',
   },
 });
@@ -29,7 +28,7 @@ const getResource = async (endpoint: string) => {
 
 const postResource = async (endpoint: string, data: any) => {
   try {
-    const response = await axiosInstance.post(endpoint, data);
+    const response = await axiosInstance.post(endpoint, JSON.stringify(data));
     return response.data;
   } catch (error) {
     console.log('postResource.error', error);
@@ -44,6 +43,7 @@ export const Login = async (userForLogin: UserForLogin) => {
 };
 
 export const Register = async (userForRegister: UserForRegister) => {
+  console.log('here-1',userForRegister);
   const endpoint = `${baseUrl}/Auth/register`;
   return await postResource(endpoint, userForRegister);
 };
@@ -130,3 +130,8 @@ export const updateParticipant = async (participant: Participant) => {
   const endpoint = `${baseUrl}/Participants/update`;
   return await postResource(endpoint, participant);
 };
+
+export const test = async() => {
+  const result = await axios.get(`https://reqres.in/api/users?page=2`);
+  console.log('result', result);
+}

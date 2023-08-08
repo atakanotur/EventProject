@@ -4,15 +4,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
 import {Button, Input, Text} from '../../../components';
-import {loginAsync, registerAsync} from '../../../store/auth';
 import {styles} from './styles';
+import { getMyEventsAsync } from '../../../store/myEvent';
 
 const LoginScreen = ({navigation}) => {
   const [loginState, setLoginState] = useState({
-    email: 'first@hotmail.com',
-    password: 'first',
-    firstName: 'first',
-    lastName: 'first',
+    email: 'third@hotmail.com',
+    password: 'third',
+    firstName: 'third',
+    lastName: 'third',
   });
 
   const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ const LoginScreen = ({navigation}) => {
       ...loginState,
       email: e,
     });
-    console.log('email', loginState.email)
+    console.log('email', loginState.email);
   };
 
   const onChangePassword = (e: string) => {
@@ -30,11 +30,12 @@ const LoginScreen = ({navigation}) => {
       ...loginState,
       password: e,
     });
-    console.log('password', loginState.password)
+    console.log('password', loginState.password);
   };
 
   const login = () => {
-    dispatch(registerAsync(loginState));
+    // dispatch(registerAsync(loginState));
+    dispatch(getMyEventsAsync());
   };
 
   return (
