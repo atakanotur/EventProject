@@ -7,7 +7,7 @@ import {
   UserForRegister,
 } from '../types';
 
-const baseUrl = 'http://10.0.2.2:8081/api';
+const baseUrl = 'https://localhost:7204/api';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: baseUrl,

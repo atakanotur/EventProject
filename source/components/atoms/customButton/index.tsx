@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, TextStyle} from 'react-native';
+import {TouchableOpacity, TextStyle, ViewStyle} from 'react-native';
 import {Text} from '../';
 
 interface CustomButtonProps {
   text?: string;
   onPress: () => void;
-  style?: TextStyle;
+  style?: ViewStyle;
+  textStyle?: TextStyle;
 }
 
-const CustomButton = ({text, onPress, style}: CustomButtonProps) => {
+const CustomButton = ({text, onPress, style, textStyle}: CustomButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const CustomButton = ({text, onPress, style}: CustomButtonProps) => {
 
   return (
     <TouchableOpacity style={style} onPress={() => setIsPressed(true)}>
-      <Text text={text} />
+      <Text text={text} style={textStyle} />
     </TouchableOpacity>
   );
 };
