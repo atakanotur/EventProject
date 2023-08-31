@@ -45,7 +45,8 @@ const TabNavigator = () => {
           if (route.name === 'Main') iconName = focused ? 'Main' : 'Main';
           else if (route.name === 'Profile')
             iconName = focused ? 'Profile' : 'Profile';
-          return <Icon type="ionicon" name={iconName} color={colors.green} />;
+          // return <Icon type="ionicon" name={iconName} color={colors.green} />;
+          return null;
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',

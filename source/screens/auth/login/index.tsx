@@ -35,7 +35,8 @@ const RegisterScreen = ({navigation}: any) => {
 
   const remember = () => {};
   const login = () => {
-    dispatch(getMyEventsAsync());
+    // dispatch(getMyEventsAsync());
+    navigation.navigate('Tab');
   };
   const register = () => {
     navigation.navigate('Register');
