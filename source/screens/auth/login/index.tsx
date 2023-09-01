@@ -7,6 +7,7 @@ import {Button, Input, Text} from '../../../components';
 import {styles} from './styles';
 import {getMyEventsAsync} from '../../../store/myEvent';
 import colors from '../../../theme/colors';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const RegisterScreen = ({navigation}: any) => {
   const [loginState, setLoginState] = useState({
@@ -74,6 +75,7 @@ const RegisterScreen = ({navigation}: any) => {
         </View>
       </View>
       <View style={styles.bottom}>
+      <Icon name="rocket" size={30} color="#900" />
         <Button
           onPress={() => login()}
           text="Login"
