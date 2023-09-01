@@ -75,7 +75,6 @@ const RegisterScreen = ({navigation}: any) => {
         </View>
       </View>
       <View style={styles.bottom}>
-      <Icon name="rocket" size={30} color="#900" />
         <Button
           onPress={() => login()}
           text="Login"

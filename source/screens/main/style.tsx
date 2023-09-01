@@ -6,52 +6,79 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     padding: 15,
-
+  },
+  banner: {
+    height: 40,
+    flexDirection: 'row'
+  },
+  bannerLeftIcon: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bannerMain: {
+    flex: 3,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bannerText: {
+    fontSize: 25
+  },
+  bannerRightIcon: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   //eventList
   eventListContainer: {
-    height: 150,
-    backgroundColor: 'red',
-    borderWidth: 1,
-    margin: 5,
+    height: 120,
+    marginTop: 10,
+    padding: 5,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   eventListHeader: {
-    borderWidth: 1,
     flexDirection: 'row',
-    flex: 2
+    flex: 2,
   },
   eventListName: {
-    borderWidth: 1,
-    flex: 5
+    flex: 5,
   },
   eventListEventType: {
-    borderWidth: 1,
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   eventListBody: {
-    borderWidth: 1,
     flexDirection: 'row',
-    flex: 5
+    flex: 5,
   },
   eventListParticipants: {
-    borderWidth: 1,
     flex: 1,
   },
   eventListDate: {
-    borderWidth: 1,
-    flex: 1
+    flex: 1,
   },
   eventListLocation: {
-    borderWidth: 1,
-    flex: 1
+    flex: 1,
   },
   eventListBodyItemIcon: {
-    borderWidth: 1,
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   eventListBodyItemInformation: {
-    borderWidth: 1,
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingLeft: 5,
+    paddingRight: 5,
   },
 });

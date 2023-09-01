@@ -35,10 +35,18 @@ export const EventList = ({
       ListHeaderComponentStyle={ListHeaderComponentStyle}
       ListFooterComponent={ListFooterComponent}
       ListFooterComponentStyle={ListFooterComponentStyle}
+      contentContainerStyle={styles.contentContainerStyle}
       // style={styles.eventList}
     />
   );
 };
 
 const styles = StyleSheet.create({
+  eventList: {
+    flex: 1,
+    
+  },
+  contentContainerStyle: {
+    flex:1,
+  }
 });
