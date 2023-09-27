@@ -2,19 +2,17 @@ import React, {useState} from 'react';
 import {View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../hooks';
+import {useAppDispatch} from '../../../hooks';
 import {Button, Input, Text} from '../../../components';
 import {styles} from './styles';
-import {getMyEventsAsync} from '../../../store/myEvent';
 import colors from '../../../theme/colors';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const RegisterScreen = ({navigation}: any) => {
   const [loginState, setLoginState] = useState({
-    email: 'third@hotmail.com',
-    password: 'third',
-    firstName: 'third',
-    lastName: 'third',
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
   });
 
   const dispatch = useAppDispatch();
@@ -51,18 +49,26 @@ const RegisterScreen = ({navigation}: any) => {
       </View>
       <View style={styles.main}>
         <Input
+          containerStyle={styles.loginInputContainer}
           placeholder="Email"
-          onChangeText={e => onChangeEmail(e)}
+          onChangeText={(e: string) => onChangeEmail(e)}
           style={styles.loginInput}
           selectionColor={colors.green}
           placeholderTextColor={colors.blue}
+          iconName="at-outline"
+          iconColor={colors.red}
+          iconSize={30}
         />
         <Input
+          containerStyle={styles.loginInputContainer}
           placeholder="Password"
-          onChangeText={e => onChangePassword(e)}
+          onChangeText={(e: string) => onChangePassword(e)}
           style={styles.loginInput}
           selectionColor={colors.white}
           placeholderTextColor={colors.blue}
+          iconName="key-outline"
+          iconColor={colors.red}
+          iconSize={30}
         />
         <View style={styles.rememberMeAndForgotPassword}>
           <Text text="Remember Me" style={styles.rememberMe} />

@@ -1,7 +1,4 @@
-import {
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {MyEvent} from '../../../types';
 
 interface EventListProps {
@@ -15,16 +12,17 @@ interface EventListProps {
   ListFooterComponentStyle?: any;
 }
 
-export const EventList = ({
-  data,
-  extraData,
-  renderItem,
-  ListEmptyComponent,
-  ListHeaderComponent,
-  ListHeaderComponentStyle,
-  ListFooterComponent,
-  ListFooterComponentStyle,
-}: EventListProps) => {
+const EventList = (props: EventListProps) => {
+  const {
+    data,
+    extraData,
+    renderItem,
+    ListEmptyComponent,
+    ListHeaderComponent,
+    ListHeaderComponentStyle,
+    ListFooterComponent,
+    ListFooterComponentStyle,
+  } = props;
   return (
     <FlatList
       data={data}
@@ -36,7 +34,8 @@ export const EventList = ({
       ListFooterComponent={ListFooterComponent}
       ListFooterComponentStyle={ListFooterComponentStyle}
       contentContainerStyle={styles.contentContainerStyle}
-      // style={styles.eventList}
+      style={styles.eventList}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
@@ -44,9 +43,8 @@ export const EventList = ({
 const styles = StyleSheet.create({
   eventList: {
     flex: 1,
-    
   },
-  contentContainerStyle: {
-    flex:1,
-  }
+  contentContainerStyle: {},
 });
+
+export default EventList;

@@ -17,23 +17,14 @@ export const styles = StyleSheet.create({
   main: {
     flex: 3,
   },
-  loginInput: {
+  registerInputContainer: {
+    marginBottom: 10
+  },
+  registerInput: {
     borderBottomWidth: 2,
     borderColor: colors.purple,
-    marginBottom: 10,
-  },
-  rememberMeAndForgotPassword: {
-    flexDirection: 'row',
-    marginLeft: 0,
-  },
-  rememberMe: {
-    color: colors.red,
-  },
-  forgotPasswordButton: {
-    flex: 1,
-  },
-  forgotPasswordButtonText: {
-    color: colors.red,
+    marginLeft: 5,
+    fontSize: 17
   },
   loginButton: {
     height: 50,

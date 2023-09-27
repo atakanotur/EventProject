@@ -1,3 +1,5 @@
 import Loading from './customLoading';
+import EventList from './eventList';
+import EventTypeList from './eventTypeList';
 
-export {Loading};
+export {Loading, EventList, EventTypeList};

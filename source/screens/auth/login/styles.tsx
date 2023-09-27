@@ -17,10 +17,14 @@ export const styles = StyleSheet.create({
   main: {
     flex: 3,
   },
+  loginInputContainer: {
+    marginBottom: 10
+  },
   loginInput: {
     borderBottomWidth: 2,
     borderColor: colors.purple,
-    marginBottom: 10,
+    marginLeft: 5,
+    fontSize: 17
   },
   rememberMeAndForgotPassword: {
     flexDirection: 'row',

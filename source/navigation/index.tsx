@@ -3,6 +3,7 @@ import {Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
   LoginScreen,
@@ -14,6 +15,7 @@ import colors from '../theme/colors';
 
 const RootStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
 const EventStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
 
@@ -30,8 +32,15 @@ const EventNavigator = () => {
   return (
     <EventStack.Navigator screenOptions={{headerShown: false}}>
       <EventStack.Screen name="Main" component={MainScreen} />
-      <EventStack.Screen name="Profile" component={ProfileScreen} />
     </EventStack.Navigator>
+  );
+};
+
+const ProfileNavigator = () => {
+  return (
+    <ProfileStack.Navigator screenOptions={{headerShown: false}}>
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+    </ProfileStack.Navigator>
   );
 };
 
@@ -39,19 +48,22 @@ const TabNavigator = () => {
   return (
     <TabStack.Navigator
       screenOptions={({route}) => ({
-        headerShown: false,
+        headerShown: true,
+        headerTitle: 'EventApp',
+        headerBackgroundContainerStyle: {borderWidth: 0},
         tabBarIcon: ({focused, color, size}) => {
-          let iconName;
-          if (route.name === 'Main') iconName = focused ? 'Main' : 'Main';
-          else if (route.name === 'Profile')
-            iconName = focused ? 'Profile' : 'Profile';
-          // return <Icon type="ionicon" name={iconName} color={colors.green} />;
-          return null;
+          let iconName: any;
+          if (route.name === 'Events')
+            iconName = focused ? 'bonfire' : 'bonfire-outline';
+          else if (route.name === 'My Events')
+            iconName = focused ? 'person' : 'person-outline';
+          return <Icon name={iconName} size={30} color={colors.white} />;
         },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: {backgroundColor: colors.red},
+        tabBarLabelStyle: {color: colors.white},
       })}>
-      <TabStack.Screen name="Main" component={EventNavigator} />
+      <TabStack.Screen name="Events" component={EventNavigator} />
+      <TabStack.Screen name="My Events" component={ProfileNavigator} />
     </TabStack.Navigator>
   );
 };

@@ -10,16 +10,9 @@ interface CustomButtonProps {
 }
 
 const CustomButton = ({text, onPress, style, textStyle}: CustomButtonProps) => {
-  const [isPressed, setIsPressed] = useState(false);
-
-  useEffect(() => {
-    if (isPressed) {
-      onPress();
-    }
-  }, [isPressed, onPress]);
 
   return (
-    <TouchableOpacity style={style} onPress={() => setIsPressed(true)}>
+    <TouchableOpacity style={style} onPress={() => onPress()}>
       <Text text={text} style={textStyle} />
     </TouchableOpacity>
   );

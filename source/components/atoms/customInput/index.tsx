@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, TextInput, TextStyle, ViewStyle} from 'react-native';
+import {View, TextInput, TextStyle, ViewStyle, StyleSheet} from 'react-native';
 import {TextInputProps} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface OwnProps {
   label?: string;
@@ -9,24 +10,49 @@ interface OwnProps {
   style?: TextStyle;
   selectionColor?: TextStyle;
   placeholderTextColor?: TextStyle;
+  onChangeText?: any;
+  iconName?: any;
+  iconColor?: any;
+  iconSize?: any;
 }
 
 export type CustomInputProps = OwnProps & TextInputProps;
 
 const CustomInput = (props: CustomInputProps) => {
-  const {containerStyle, placeholder, style, selectionColor, placeholderTextColor} = props;
-  const [value, setValue] = useState('');
+  const {
+    containerStyle,
+    placeholder,
+    style,
+    selectionColor,
+    placeholderTextColor,
+    onChangeText,
+    iconName,
+    iconColor,
+    iconSize,
+  } = props;
   return (
-    <View style={containerStyle}>
+    <View style={[styles.containerStyle, containerStyle]}>
+      <Icon name={iconName} color={iconColor} size={iconSize} />
       <TextInput
         placeholder={placeholder}
-        value={value}
-        onChangeText={setValue}
-        style={style}
+        onChangeText={e => onChangeText(e)}
+        style={[styles.inputStyle, style]}
         selectionColor={selectionColor}
         placeholderTextColor={placeholderTextColor}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  containerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputStyle: {
+    flex: 1,
+  },
+});
+
 export default CustomInput;

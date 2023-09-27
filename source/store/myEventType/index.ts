@@ -44,7 +44,44 @@ interface InitialState extends InitialStateBase {
 }
 
 const initialState: InitialState = {
-  myEventTypes: [],
+  myEventTypes: [
+    {
+      id: 0,
+      name: 'Coffee Talk',
+    },
+    {
+      id: 1,
+      name: 'Travel',
+    },
+    {
+      id: 2,
+      name: 'Night Party',
+    },
+    {
+      id: 3,
+      name: 'Sport',
+    },
+    {
+      id: 4,
+      name: 'Just Fun',
+    },
+    {
+      id: 5,
+      name: 'Fishing',
+    },
+    {
+      id: 6,
+      name: 'Coding',
+    },
+    {
+      id: 7,
+      name: 'Food',
+    },
+    {
+      id: 8,
+      name: 'Art',
+    },
+  ],
   isLoading: false,
   error: null,
 };

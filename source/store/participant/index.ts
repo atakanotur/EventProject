@@ -63,7 +63,48 @@ interface InitialState extends InitialStateBase {
 }
 
 const initialState: InitialState = {
-  participants: [],
+  participants: [
+    {
+      id: 0,
+      myEventId: 1,
+      userId: 4,
+    },
+    {
+      id: 0,
+      myEventId: 2,
+      userId: 4,
+    },
+    {
+      id: 0,
+      myEventId: 3,
+      userId: 4,
+    },
+    {
+      id: 0,
+      myEventId: 4,
+      userId: 4,
+    },
+    {
+      id: 0,
+      myEventId: 5,
+      userId: 4,
+    },
+    {
+      id: 0,
+      myEventId: 6,
+      userId: 4,
+    },
+    {
+      id: 0,
+      myEventId: 2,
+      userId: 4,
+    },
+    {
+      id: 0,
+      myEventId: 3,
+      userId: 4,
+    },
+  ],
   participant: null,
   isLoading: false,
   error: null,
