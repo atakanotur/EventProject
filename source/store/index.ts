@@ -12,6 +12,10 @@ const store = configureStore({
     myEventTypes: myEventTypesSlice,
     participants: participantsSlice,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

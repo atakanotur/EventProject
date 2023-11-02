@@ -120,7 +120,7 @@ const myEventTypesSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getParticipantsAsync.fulfilled, (state, action) => {
-      state.participants = action.payload;
+      state.participants = action.payload.data;
       state.isLoading = false;
     });
     builder.addCase(getParticipantsAsync.rejected, (state, action) => {
@@ -133,8 +133,8 @@ const myEventTypesSlice = createSlice({
     });
     builder.addCase(
       getParticipantsByEventIdAsync.fulfilled,
-      (state, action) => {
-        state.participants = action.payload;
+      (state, action: any) => {
+        state.participants = action.payload.data;
         state.isLoading = false;
       },
     );
@@ -146,10 +146,13 @@ const myEventTypesSlice = createSlice({
     builder.addCase(getParticipantByUserIdAsync.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(getParticipantByUserIdAsync.fulfilled, (state, action) => {
-      state.participant = action.payload;
-      state.isLoading = false;
-    });
+    builder.addCase(
+      getParticipantByUserIdAsync.fulfilled,
+      (state, action: any) => {
+        state.participant = action.payload.data;
+        state.isLoading = false;
+      },
+    );
     builder.addCase(getParticipantByUserIdAsync.rejected, (state, action) => {
       state.error = action.error;
       state.isLoading = false;

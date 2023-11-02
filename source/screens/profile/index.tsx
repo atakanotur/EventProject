@@ -1,15 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, View} from 'react-native';
-import {Loading, Button, Input, Text} from '../../components';
+import {Modal, View, ImageBackground} from 'react-native';
+import {
+  Loading,
+  Button,
+  Input,
+  Text,
+  EventList,
+  EventListRenderItem,
+} from '../../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
 import {AddEventModal} from '../../components/organisms/addEventModal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../../theme/colors';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const ProfileScreen = () => {
-  const [addEventModalVisible, setAddEventModalVisible] = useState(true);
+const source = require('../../theme/a1.png');
+
+const ProfileScreen = ({navigation}: any) => {
+  const [addEventModalVisible, setAddEventModalVisible] = useState(false);
   const [eventDate, setEventDate] = useState(new Date());
   const [eventDateVisible, setEventDateVisible] = useState(false);
+  const myEvents = useAppSelector(state => state.myEvents.myEvents);
+  const logout = async () => {
+    await AsyncStorage.setItem('eventProjectEmail', '');
+    await AsyncStorage.setItem('eventProjectPassword', '');
+    navigation.navigate('Auth');
+  };
   const handleConfirmDateTime = (e: any) => {
     console.log('e', e);
     setEventDate(e);
@@ -43,11 +62,37 @@ const ProfileScreen = () => {
     console.log('');
   };
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.top}>
-        <Button text="+" onPress={() => addEvent()} />
+        <View style={styles.options}>
+          <Icon
+            name="log-out-outline"
+            size={35}
+            color={colors.blue}
+            onPress={logout}
+          />
+        </View>
+        <ImageBackground
+          source={source}
+          style={styles.topImageBackground}
+          imageStyle={styles.topImageBackgroundImage}
+          resizeMode="contain">
+          <Button
+            text="+"
+            onPress={() => addEvent()}
+            style={styles.addButton}
+            textStyle={styles.addButtonText}
+          />
+        </ImageBackground>
       </View>
-      <View style={styles.bottom}></View>
+      <View style={styles.bottom}>
+        <EventList
+          data={myEvents}
+          renderItem={(item: any) => {
+            return <EventListRenderItem item={item} />;
+          }}
+        />
+      </View>
       <AddEventModal
         visible={addEventModalVisible}
         transparent={true}

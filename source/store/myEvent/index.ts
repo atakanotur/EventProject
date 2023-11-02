@@ -63,78 +63,7 @@ interface InitialState extends InitialStateBase {
 }
 
 const initialState: InitialState = {
-  myEvents: [
-    {
-      id: 1000,
-      userId: 1007,
-      myEventTypeId: 0,
-      name: 'event1',
-      address: 'address,address / address',
-      date: new Date('2025-08-05T09:56:19.197'),
-      participantLimit: 25,
-      participantCount: 10,
-    },
-    {
-      id: 1001,
-      userId: 1007,
-      myEventTypeId: 1,
-      name: 'event2',
-      address: 'address,address / address',
-      date: new Date('2025-08-05T09:56:19.197'),
-      participantLimit: 55,
-      participantCount: 15,
-    },
-    {
-      id: 1002,
-      userId: 1005,
-      myEventTypeId: 2,
-      name: 'event3',
-      address: 'address,address / address',
-      date: new Date('2025-08-05T09:56:19.197'),
-      participantLimit: 35,
-      participantCount: 6,
-    },
-    {
-      id: 1003,
-      userId: 1005,
-      myEventTypeId: 3,
-      name: 'event4',
-      address: 'address,address / address',
-      date: new Date('2025-08-05T09:56:19.197'),
-      participantLimit: 45,
-      participantCount: 16,
-    },
-    {
-      id: 1004,
-      userId: 1005,
-      myEventTypeId: 4,
-      name: 'event5',
-      address: 'address,address / address',
-      date: new Date('2025-08-05T09:56:19.197'),
-      participantLimit: 45,
-      participantCount: 16,
-    },
-    {
-      id: 1005,
-      userId: 1005,
-      myEventTypeId: 5,
-      name: 'event6',
-      address: 'address,address / address',
-      date: new Date('2025-08-05T09:56:19.197'),
-      participantLimit: 45,
-      participantCount: 16,
-    },
-    {
-      id: 1006,
-      userId: 1005,
-      myEventTypeId: 6,
-      name: 'event7',
-      address: 'address,address / address',
-      date: new Date('2025-08-05T09:56:19.197'),
-      participantLimit: 45,
-      participantCount: 16,
-    },
-  ],
+  myEvents: [],
   myEvent: null,
   isLoading: false,
   error: null,
@@ -150,7 +79,7 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMyEventsAsync.fulfilled, (state, action) => {
-      state.myEvents = action.payload;
+      state.myEvents = action.payload.data;
       state.isLoading = false;
     });
     builder.addCase(getMyEventsAsync.rejected, (state, action) => {
@@ -162,7 +91,7 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMyEventByIdAsync.fulfilled, (state, action) => {
-      state.myEvent = action.payload;
+      state.myEvent = action.payload.data;
       state.isLoading = false;
     });
     builder.addCase(getMyEventByIdAsync.rejected, (state, action) => {
@@ -174,7 +103,7 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMyEventsByUserIdAsync.fulfilled, (state, action) => {
-      state.myEvents = action.payload;
+      state.myEvents = action.payload.data;
       state.isLoading = false;
     });
     builder.addCase(getMyEventsByUserIdAsync.rejected, (state, action) => {

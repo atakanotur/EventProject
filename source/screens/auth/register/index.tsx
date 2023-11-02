@@ -1,19 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
 import {Button, Input, Text} from '../../../components';
 import {styles} from './styles';
-import {getMyEventsAsync} from '../../../store/myEvent';
 import colors from '../../../theme/colors';
+import {registerAsync} from '../../../store/auth';
 
 const RegisterScreen = ({navigation}: any) => {
+  const token = useAppSelector(state => state.auth.token);
+  const error = useAppSelector(state => state.auth.error);
+
+  useEffect(() => {
+    console.log('token', token);
+    console.log('error', error);
+  }, [token, error]);
+
   const [registerState, setRegisterState] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
+    email: 'Atakan',
+    password: 'Otur',
+    firstName: 'atakan.otur@hotmail.com',
+    lastName: 'atakan5252',
   });
 
   const dispatch = useAppDispatch();
@@ -53,7 +61,9 @@ const RegisterScreen = ({navigation}: any) => {
   const login = () => {
     navigation.navigate('Login');
   };
-  const register = () => {};
+  const register = () => {
+    dispatch(registerAsync(registerState));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,7 +78,7 @@ const RegisterScreen = ({navigation}: any) => {
           style={styles.registerInput}
           selectionColor={colors.white}
           placeholderTextColor={colors.blue}
-          iconName='person-circle-outline'
+          iconName="person-circle-outline"
           iconColor={colors.red}
           iconSize={30}
         />
@@ -79,7 +89,7 @@ const RegisterScreen = ({navigation}: any) => {
           style={styles.registerInput}
           selectionColor={colors.white}
           placeholderTextColor={colors.blue}
-          iconName='people-circle-outline'
+          iconName="people-circle-outline"
           iconColor={colors.red}
           iconSize={30}
         />
@@ -90,7 +100,7 @@ const RegisterScreen = ({navigation}: any) => {
           style={styles.registerInput}
           selectionColor={colors.green}
           placeholderTextColor={colors.blue}
-          iconName='at-outline'
+          iconName="at-outline"
           iconColor={colors.red}
           iconSize={30}
         />
@@ -101,7 +111,7 @@ const RegisterScreen = ({navigation}: any) => {
           style={styles.registerInput}
           selectionColor={colors.white}
           placeholderTextColor={colors.blue}
-          iconName='key-outline'
+          iconName="key-outline"
           iconColor={colors.red}
           iconSize={30}
         />

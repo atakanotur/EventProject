@@ -3,12 +3,12 @@ import {Text} from '../../atoms';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import colors from '../../../theme/colors';
-import { EventTypeIcon } from '../../../utils/eventTypeIcon';
+import {EventTypeIcon} from '../../../utils/eventTypeIcon';
 
 interface EventListRenderItemProps {
   item: any;
-  selectEvent: any;
-  selectedEvent: number;
+  selectEvent?: any;
+  selectedEvent?: number;
 }
 
 export const EventListRenderItem = (props: EventListRenderItemProps) => {
@@ -18,7 +18,7 @@ export const EventListRenderItem = (props: EventListRenderItemProps) => {
     <TouchableOpacity
       style={[
         styles.eventListContainer,
-        selectedEvent == id ? {borderColor: colors.red} : null,
+        {borderColor: selectedEvent == id ? colors.red : colors.white},
       ]}
       onPress={() => selectEvent(item)}>
       <View style={styles.eventListHeader}>
@@ -26,7 +26,11 @@ export const EventListRenderItem = (props: EventListRenderItemProps) => {
           <Text text={item.item.name} />
         </View>
         <View style={styles.eventListEventType}>
-          <Icon name={EventTypeIcon(item.item.myEventTypeId)} size={30} color="#900" />
+          <Icon
+            name={EventTypeIcon(item.item.myEventTypeId)}
+            size={30}
+            color="#900"
+          />
         </View>
       </View>
       <View style={styles.eventListBody}>

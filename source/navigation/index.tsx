@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -48,7 +47,7 @@ const TabNavigator = () => {
   return (
     <TabStack.Navigator
       screenOptions={({route}) => ({
-        headerShown: true,
+        headerShown: false,
         headerTitle: 'EventApp',
         headerBackgroundContainerStyle: {borderWidth: 0},
         tabBarIcon: ({focused, color, size}) => {
@@ -57,9 +56,9 @@ const TabNavigator = () => {
             iconName = focused ? 'bonfire' : 'bonfire-outline';
           else if (route.name === 'My Events')
             iconName = focused ? 'person' : 'person-outline';
-          return <Icon name={iconName} size={30} color={colors.white} />;
+          return <Icon name={iconName} size={25} color={colors.white} />;
         },
-        tabBarStyle: {backgroundColor: colors.red},
+        tabBarStyle: {backgroundColor: colors.red, paddingTop: 10},
         tabBarLabelStyle: {color: colors.white},
       })}>
       <TabStack.Screen name="Events" component={EventNavigator} />
@@ -72,7 +71,7 @@ const RootNavigator = () => {
   return (
     <RootStack.Navigator>
       <RootStack.Screen
-        name="AuthNavigator"
+        name="Auth"
         component={AuthNavigator}
         options={{headerShown: false}}
       />

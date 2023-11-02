@@ -7,7 +7,7 @@ import {
   UserForRegister,
 } from '../types';
 
-const baseUrl = 'https://localhost:7204/api';
+const baseUrl = 'http://192.168.1.188:8087/api';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: baseUrl,
@@ -17,23 +17,29 @@ const axiosInstance: AxiosInstance = axios.create({
 });
 
 const getResource = async (endpoint: string) => {
-  try {
-    const response = await axiosInstance.get(endpoint);
-    return response.data;
-  } catch (error) {
-    console.log('getResource.error', error);
-    throw new Error(`Error fetching resouce from endpoint: ${endpoint}`);
-  }
+  return await axiosInstance
+    .get(endpoint)
+    .then((response: any) => {
+      console.log('getResource.response', response);
+      return response;
+    })
+    .catch((error: any) => {
+      console.log('getResource.error', error);
+      return null;
+    });
 };
 
 const postResource = async (endpoint: string, data: any) => {
-  try {
-    const response = await axiosInstance.post(endpoint, JSON.stringify(data));
-    return response.data;
-  } catch (error) {
-    console.log('postResource.error', error);
-    throw new Error(`Error posting resource to enpoint: ${endpoint}`);
-  }
+  return await axiosInstance
+    .post(endpoint, data)
+    .then((response: any) => {
+      console.log('postResource.response', response);
+      return response;
+    })
+    .catch((error: any) => {
+      console.log('postResource.error', error);
+      return null;
+    });
 };
 
 //Auth
@@ -43,7 +49,6 @@ export const Login = async (userForLogin: UserForLogin) => {
 };
 
 export const Register = async (userForRegister: UserForRegister) => {
-  console.log('here-1',userForRegister);
   const endpoint = `${baseUrl}/Auth/register`;
   return await postResource(endpoint, userForRegister);
 };
@@ -131,7 +136,7 @@ export const updateParticipant = async (participant: Participant) => {
   return await postResource(endpoint, participant);
 };
 
-export const test = async() => {
+export const test = async () => {
   const result = await axios.get(`https://reqres.in/api/users?page=2`);
   console.log('result', result);
-}
+};

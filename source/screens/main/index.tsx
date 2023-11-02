@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
 import {
   Text,
   EventList,
@@ -13,17 +12,30 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
 import {search} from '../../utils/search';
 import {selectTypeOfEvent} from '../../utils/selectType';
+import {MyEvent, MyEventType} from '../../types';
+import {getMyEventsAsync} from '../../store/myEvent';
 
 const MainScreen = () => {
-  const myEventsSelector = useAppSelector(state => state.myEvents);
-  const myEventTypesSelector = useAppSelector(state => state.myEventTypes);
-  const loading = myEventsSelector.isLoading;
-  const events = myEventsSelector.myEvents;
-  const myEventTypes = myEventTypesSelector.myEventTypes;
+  const loading = useAppSelector(state => state.myEvents.isLoading);
+  const events: MyEvent[] = useAppSelector(state => state.myEvents.myEvents);
+  const myEventTypes: MyEventType[] = useAppSelector(
+    state => state.myEventTypes.myEventTypes,
+  );
   const [searchText, setSearchText] = useState('');
   const [copyOfEvents, setCopyOfEvents] = useState(events);
   const [selectedEvent, setSelectedEvent] = useState(-1);
   const [selectedEventType, setSelectedEventType] = useState(-1);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getMyEventsAsync());
+  }, []);
+
+  useEffect(() => {
+    console.log('events', events);
+    setCopyOfEvents(events);
+  }, [events]);
 
   useEffect(() => {
     if (searchText !== '') setCopyOfEvents(search(events, searchText));
@@ -51,7 +63,7 @@ const MainScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <EventList
         data={copyOfEvents}
         extraData={copyOfEvents}
@@ -76,7 +88,7 @@ const MainScreen = () => {
         // ListFooterComponent={}
         // ListFooterComponentStyle={}
       />
-      <Loading visible={loading} />
+      {/* <Loading visible={loading} /> */}
     </SafeAreaView>
   );
 };

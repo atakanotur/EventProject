@@ -96,7 +96,7 @@ const myEventTypesSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMyEventTypesAsync.fulfilled, (state, action) => {
-      state.myEventTypes = action.payload;
+      state.myEventTypes = action.payload.data;
       state.isLoading = false;
     });
     builder.addCase(getMyEventTypesAsync.rejected, (state, action) => {

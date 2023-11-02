@@ -1,15 +1,15 @@
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {MyEvent} from '../../../types';
 
 interface EventListProps {
-  data?: MyEvent[];
+  data: MyEvent[];
   extraData?: MyEvent[];
-  renderItem?: any;
+  renderItem: any;
   ListEmptyComponent?: any;
   ListHeaderComponent?: any;
-  ListHeaderComponentStyle?: any;
+  ListHeaderComponentStyle?: StyleProp<ViewStyle>;
   ListFooterComponent?: any;
-  ListFooterComponentStyle?: any;
+  ListFooterComponentStyle?: StyleProp<ViewStyle>;
 }
 
 const EventList = (props: EventListProps) => {

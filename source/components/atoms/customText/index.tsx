@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TextStyle, ViewStyle} from 'react-native';
+import {View, Text, StyleSheet, TextStyle, ViewStyle, StyleProp} from 'react-native';
 
 interface CustomTextProps {
   text: string | any;
-  containerStyle?: ViewStyle;
-  style?: TextStyle;
+  containerStyle?: StyleProp<ViewStyle>;
+  style?: StyleProp<TextStyle>;
 }
 
 const CustomText = ({text, containerStyle, style}: CustomTextProps) => {

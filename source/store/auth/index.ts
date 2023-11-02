@@ -38,7 +38,8 @@ const authSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(loginAsync.fulfilled, (state, action) => {
-      state.token = action.payload;
+      console.log('action', action);
+      state.token = action.payload?.data;
       state.isLoading = false;
     });
     builder.addCase(loginAsync.rejected, (state, action) => {
@@ -50,7 +51,7 @@ const authSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(registerAsync.fulfilled, (state, action) => {
-      state.token = action.payload;
+      state.token = action.payload?.data;
       state.isLoading = false;
     });
     builder.addCase(registerAsync.rejected, (state, action) => {
