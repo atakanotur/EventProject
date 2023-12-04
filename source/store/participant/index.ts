@@ -1,9 +1,10 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {InitialStateBase, Participant} from '../../types';
+import {InitialStateBase, MyEvent, Participant} from '../../types';
 import {
   getAllParticipants,
-  getParticipantsByEventId,
+  getParticipantsByMyEventId,
   getParticipantByUserId,
+  getAttendedMyEventIds,
   addParticipant,
   deleteParticipant,
   updateParticipant,
@@ -13,15 +14,15 @@ export const getParticipantsAsync = createAsyncThunk(
   'participant/getParticipantsAsync',
   async () => {
     const result = await getAllParticipants();
-    return result;
+    return await result;
   },
 );
 
 export const getParticipantsByEventIdAsync = createAsyncThunk(
   'participant/getParticipantsByEventIdAsync',
   async (eventId: number) => {
-    const result = await getParticipantsByEventId(eventId);
-    return result;
+    const result = await getParticipantsByMyEventId(eventId);
+    return await result;
   },
 );
 
@@ -29,7 +30,15 @@ export const getParticipantByUserIdAsync = createAsyncThunk(
   'participant/getParticipantByUserIdAsync',
   async (userId: number) => {
     const result = await getParticipantByUserId(userId);
-    return result;
+    return await result;
+  },
+);
+
+export const getAttendedMyEventIdsAsync = createAsyncThunk(
+  'participant/getAttendedMyEventIdsAsync',
+  async (userId: number) => {
+    const result = await getAttendedMyEventIds(userId);
+    return await result;
   },
 );
 
@@ -37,7 +46,7 @@ export const addParticipantAsync = createAsyncThunk(
   'participant/addParticipantAsync',
   async (participant: Participant) => {
     const result = await addParticipant(participant);
-    return result;
+    return await result;
   },
 );
 
@@ -45,7 +54,7 @@ export const deleteParticipantAsync = createAsyncThunk(
   'participant/deleteParticipantAsync',
   async (participant: Participant) => {
     const result = await deleteParticipant(participant);
-    return result;
+    return await result;
   },
 );
 
@@ -53,58 +62,19 @@ export const updateParticipantAsync = createAsyncThunk(
   'participant/updateParticipant',
   async (participant: Participant) => {
     const result = await updateParticipant(participant);
-    return result;
+    return await result;
   },
 );
 
 interface InitialState extends InitialStateBase {
   participants: Participant[];
   participant: Participant | null;
+  attendedMyEventIds: MyEvent[];
 }
 
 const initialState: InitialState = {
-  participants: [
-    {
-      id: 0,
-      myEventId: 1,
-      userId: 4,
-    },
-    {
-      id: 0,
-      myEventId: 2,
-      userId: 4,
-    },
-    {
-      id: 0,
-      myEventId: 3,
-      userId: 4,
-    },
-    {
-      id: 0,
-      myEventId: 4,
-      userId: 4,
-    },
-    {
-      id: 0,
-      myEventId: 5,
-      userId: 4,
-    },
-    {
-      id: 0,
-      myEventId: 6,
-      userId: 4,
-    },
-    {
-      id: 0,
-      myEventId: 2,
-      userId: 4,
-    },
-    {
-      id: 0,
-      myEventId: 3,
-      userId: 4,
-    },
-  ],
+  participants: [],
+  attendedMyEventIds: [],
   participant: null,
   isLoading: false,
   error: null,
@@ -154,6 +124,18 @@ const myEventTypesSlice = createSlice({
       },
     );
     builder.addCase(getParticipantByUserIdAsync.rejected, (state, action) => {
+      state.error = action.error;
+      state.isLoading = false;
+    });
+    // getAttendedMyEventIdsAsync
+    builder.addCase(getAttendedMyEventIdsAsync.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(getAttendedMyEventIdsAsync.fulfilled, (state, action) => {
+      state.attendedMyEventIds = action.payload.data;
+      state.isLoading = false;
+    });
+    builder.addCase(getAttendedMyEventIdsAsync.rejected, (state, action) => {
       state.error = action.error;
       state.isLoading = false;
     });

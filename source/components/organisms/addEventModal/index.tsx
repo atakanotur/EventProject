@@ -13,6 +13,7 @@ interface OwnAddEventModalProps {
   closeIconOnPress: any;
   eventDateOnPress: any;
   eventDateValue: Date;
+  createButtonOnPress: () => void;
 }
 
 export type AddEventModalProps = OwnAddEventModalProps & ModalProps;
@@ -26,9 +27,8 @@ export const AddEventModal = (props: AddEventModalProps) => {
     closeIconOnPress,
     eventDateOnPress,
     eventDateValue,
+    createButtonOnPress,
   } = props;
-
-  console.log('eventDateValue', typeof eventDateValue.toDateString());
 
   return (
     <Modal
@@ -70,7 +70,7 @@ export const AddEventModal = (props: AddEventModalProps) => {
         style={styles.modalInput}
       />
       <Button
-        onPress={eventDateOnPress}
+        onPress={createButtonOnPress}
         style={styles.createButton}
         text="Create Your Super Event"
         textStyle={styles.createButtonText}

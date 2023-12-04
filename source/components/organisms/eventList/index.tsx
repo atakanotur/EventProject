@@ -1,4 +1,11 @@
-import {FlatList, StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import React, {useState} from 'react';
+import {
+  FlatList,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+  RefreshControlProps,
+} from 'react-native';
 import {MyEvent} from '../../../types';
 
 interface EventListProps {
@@ -10,6 +17,7 @@ interface EventListProps {
   ListHeaderComponentStyle?: StyleProp<ViewStyle>;
   ListFooterComponent?: any;
   ListFooterComponentStyle?: StyleProp<ViewStyle>;
+  RefreshControl?: React.ReactElement<RefreshControlProps>;
 }
 
 const EventList = (props: EventListProps) => {
@@ -22,6 +30,7 @@ const EventList = (props: EventListProps) => {
     ListHeaderComponentStyle,
     ListFooterComponent,
     ListFooterComponentStyle,
+    RefreshControl,
   } = props;
   return (
     <FlatList
@@ -36,6 +45,7 @@ const EventList = (props: EventListProps) => {
       contentContainerStyle={styles.contentContainerStyle}
       style={styles.eventList}
       showsVerticalScrollIndicator={false}
+      refreshControl={RefreshControl}
     />
   );
 };

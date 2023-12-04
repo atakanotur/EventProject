@@ -19,11 +19,10 @@ interface DropDownProps {
 const DropDown = (props: DropDownProps) => {
   const {buttonTitle, data, onSelect, visible, containerStyle} = props;
   const [open, setOpen] = useState(false);
-  const renderItem = (item: any) => {
-    console.log('customDropDown.item', item);
+  const renderItem = ({item, index}: any) => {
     return (
       <TouchableOpacity>
-        <Text text={item.item.name} />
+        <Text text={item.name} />
       </TouchableOpacity>
     );
   };

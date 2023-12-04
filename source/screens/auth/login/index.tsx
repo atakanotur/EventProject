@@ -8,47 +8,43 @@ import {styles} from './styles';
 import colors from '../../../theme/colors';
 import {loginAsync} from '../../../store/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {UserForLogin} from '../../../types';
 
 const RegisterScreen = ({navigation}: any) => {
+  const dispatch = useAppDispatch();
   const token = useAppSelector(state => state.auth.token);
   const loading = useAppSelector(state => state.auth.isLoading);
   const [opening, setOpening] = useState(true);
   const [loginState, setLoginState] = useState({
-    email: '',
-    password: '',
+    email: 'Atakan',
+    password: 'Otur',
   });
   const [rememberSelect, setRememberSelect] = useState(false);
 
-  const navigateToTabNavigator = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: 'Tab'}],
-      }),
-    );
+  const navigateToTabNavigator = ({email, password}: UserForLogin) => {
+    dispatch(loginAsync({email, password})).then((response: any) => {
+      if (response.payload?.status === 200) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Tab'}],
+          }),
+        );
+      } else {
+        setOpening(false);
+      }
+    });
   };
-
-  useEffect(() => {
-    console.log('loading', loading);
-    console.log('opening', opening);
-  }, [loading, opening]);
 
   useEffect(() => {
     const getUser = async () => {
       const email: any = await AsyncStorage.getItem('eventProjectEmail');
       const password: any = await AsyncStorage.getItem('eventProjectPassword');
-      dispatch(loginAsync({email, password})).then((response: any) => {
-        if (response.payload?.status === 200) {
-          navigateToTabNavigator();
-        } else {
-          setOpening(false);
-        }
-      });
+      navigateToTabNavigator({email, password});
     };
     getUser();
   }, []);
 
-  const dispatch = useAppDispatch();
   const onChangeEmail = (e: string) => {
     setLoginState({
       ...loginState,
@@ -70,12 +66,7 @@ const RegisterScreen = ({navigation}: any) => {
       await AsyncStorage.setItem('eventProjectEmail', loginState.email);
       await AsyncStorage.setItem('eventProjectPassword', loginState.email);
     }
-    console.log('heree', loginState);
-    dispatch(loginAsync(loginState)).then((response: any) => {
-      if (response.payload.status === 200) {
-        navigateToTabNavigator();
-      }
-    });
+    navigateToTabNavigator(loginState);
   };
   const register = () => {
     navigation.navigate('Register');

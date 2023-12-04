@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from '../../../hooks';
 import {Button, Input, Text} from '../../../components';
 import {styles} from './styles';
 import colors from '../../../theme/colors';
-import {registerAsync} from '../../../store/auth';
+import {loginAsync, registerAsync} from '../../../store/auth';
 
 const RegisterScreen = ({navigation}: any) => {
   const token = useAppSelector(state => state.auth.token);
@@ -15,13 +15,27 @@ const RegisterScreen = ({navigation}: any) => {
   useEffect(() => {
     console.log('token', token);
     console.log('error', error);
+    if (token !== null)
+      dispatch(
+        loginAsync({
+          email: registerState.email,
+          password: registerState.password,
+        }),
+      ).then(() => {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Tab'}],
+          }),
+        );
+      });
   }, [token, error]);
 
   const [registerState, setRegisterState] = useState({
-    email: 'Atakan',
-    password: 'Otur',
-    firstName: 'atakan.otur@hotmail.com',
-    lastName: 'atakan5252',
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
   });
 
   const dispatch = useAppDispatch();

@@ -11,7 +11,7 @@ export const getMyEventTypesAsync = createAsyncThunk(
   'myEventType/getMyEventTypesAsync',
   async () => {
     const result = await getAllMyEventTypes();
-    return result;
+    return await result;
   },
 );
 
@@ -19,7 +19,7 @@ export const addMyEventTypeAsync = createAsyncThunk(
   'myEventType/addMyEventType',
   async (myEventType: MyEventType) => {
     const result = await addMyEventType(myEventType);
-    return result;
+    return await result;
   },
 );
 
@@ -27,7 +27,7 @@ export const deleteMyEventTypeAsync = createAsyncThunk(
   'myEventType/deleteMyEventType',
   async (myEventType: MyEventType) => {
     const result = await deleteMyEventType(myEventType);
-    return result;
+    return await result;
   },
 );
 
@@ -35,7 +35,7 @@ export const updateMyEventTypeAsync = createAsyncThunk(
   'myEventType/updateMyEventType',
   async (myEventType: MyEventType) => {
     const result = await updateMyEventType(myEventType);
-    return result;
+    return await result;
   },
 );
 

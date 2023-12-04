@@ -7,7 +7,7 @@ import {
   UserForRegister,
 } from '../types';
 
-const baseUrl = 'http://192.168.1.188:8087/api';
+const baseUrl = 'http://develeopar.com/api';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: baseUrl,
@@ -60,12 +60,22 @@ export const getAllMyEvents = async () => {
 };
 
 export const getMyEventsByUserId = async (userId: number) => {
-  const endpoint = `${baseUrl}/MyEvents/getbyuserid/${userId}`;
+  const endpoint = `${baseUrl}/MyEvents/getbyuserid?userId=${userId}`;
   return await getResource(endpoint);
 };
 
 export const getMyEventById = async (myEventId: number) => {
-  const endpoint = `${baseUrl}/MyEvents/getmyeventbyid/${myEventId}`;
+  const endpoint = `${baseUrl}/MyEvents/getmyeventbyid?myEventId=${myEventId}`;
+  return await getResource(endpoint);
+};
+
+export const getActiveMyEvents = async (userId: number) => {
+  const endpoint = `${baseUrl}/MyEvents/getactives?userId=${userId}`;
+  return await getResource(endpoint);
+};
+
+export const getAttendedMyEventsByUserId = async (userId: number) => {
+  const endpoint = `${baseUrl}/MyEvents/getattendedmyeventsbyuserid?userId=${userId}`;
   return await getResource(endpoint);
 };
 
@@ -84,9 +94,19 @@ export const updateMyEvent = async (myEvent: MyEvent) => {
   return await postResource(endpoint, myEvent);
 };
 
+export const joinMyEvent = async (participant: Participant) => {
+  const endpoint = `${baseUrl}/MyEvents/joinmyevent`;
+  return await postResource(endpoint, participant);
+};
+
+export const leaveMyEvent = async (participant: Participant) => {
+  const endpoint = `${baseUrl}/MyEvents/leavemyevent`;
+  return await postResource(endpoint, participant);
+};
+
 //MyEventTypes
 export const getAllMyEventTypes = async () => {
-  const endpoint = `${baseUrl}/MyEventTypes/getall()`;
+  const endpoint = `${baseUrl}/MyEventTypes/getall`;
   return await getResource(endpoint);
 };
 
@@ -112,12 +132,17 @@ export const getAllParticipants = async () => {
 };
 
 export const getParticipantByUserId = async (userId: number) => {
-  const endpoint = `${baseUrl}/Participants/getbyuserid/${userId}`;
+  const endpoint = `${baseUrl}/Participants/getbyuserid?userId=${userId}`;
   return await getResource(endpoint);
 };
 
-export const getParticipantsByEventId = async (myEventId: number) => {
-  const endpoint = `${baseUrl}/Participants/getbyeventid/${myEventId}`;
+export const getParticipantsByMyEventId = async (myEventId: number) => {
+  const endpoint = `${baseUrl}/Participants/getbyeventid?myEventId=${myEventId}`;
+  return await getResource(endpoint);
+};
+
+export const getAttendedMyEventIds = async (userId: number) => {
+  const endpoint = `${baseUrl}/Participants/getattendedmyeventids?userId=${userId}`;
   return await getResource(endpoint);
 };
 
@@ -134,9 +159,4 @@ export const deleteParticipant = async (participant: Participant) => {
 export const updateParticipant = async (participant: Participant) => {
   const endpoint = `${baseUrl}/Participants/update`;
   return await postResource(endpoint, participant);
-};
-
-export const test = async () => {
-  const result = await axios.get(`https://reqres.in/api/users?page=2`);
-  console.log('result', result);
 };

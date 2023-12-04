@@ -1,13 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TextStyle, ViewStyle, StyleProp} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextStyle,
+  ViewStyle,
+  StyleProp,
+} from 'react-native';
 
 interface CustomTextProps {
   text: string | any;
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<TextStyle>;
+  numberOfLines?: number;
 }
 
-const CustomText = ({text, containerStyle, style}: CustomTextProps) => {
+const CustomText = ({
+  text,
+  containerStyle,
+  style,
+  numberOfLines,
+}: CustomTextProps) => {
   const [state, setState] = useState(text);
 
   useEffect(() => {
@@ -16,7 +29,12 @@ const CustomText = ({text, containerStyle, style}: CustomTextProps) => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <Text style={[styles.text, style]}>{state}</Text>
+      <Text
+        style={[styles.text, style]}
+        numberOfLines={numberOfLines}
+        ellipsizeMode="tail">
+        {state}
+      </Text>
     </View>
   );
 };

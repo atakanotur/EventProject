@@ -75,7 +75,6 @@ const RootNavigator = () => {
         component={AuthNavigator}
         options={{headerShown: false}}
       />
-
       <RootStack.Screen
         name="Tab"
         component={TabNavigator}

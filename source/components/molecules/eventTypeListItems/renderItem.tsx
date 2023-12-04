@@ -6,7 +6,7 @@ const EventTypesRenderItem = (item: any) => {
   return (
     <View>
       <View>
-        <Text text={item.item.name} />
+        <Text text={item.name} />
       </View>
     </View>
   );

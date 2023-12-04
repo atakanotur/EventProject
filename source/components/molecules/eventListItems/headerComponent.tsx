@@ -19,9 +19,8 @@ interface OwnProps {
 const EventListHeaderComponent = (props: OwnProps) => {
   const {myEventTypes, onChangeText, selectEventType, selectedEventType} =
     props;
-  const renderItem = (item: any) => {
-    const id = item.item.id;
-    const index = item.index;
+  const renderItem = ({item, index}: any) => {
+    const id = item.id;
     return (
       <TouchableOpacity
         style={[
@@ -31,7 +30,7 @@ const EventListHeaderComponent = (props: OwnProps) => {
             : null,
         ]}
         onPress={() => selectEventType(id)}>
-        <Text text={item.item.name} />
+        <Text text={item.name} />
       </TouchableOpacity>
     );
   };

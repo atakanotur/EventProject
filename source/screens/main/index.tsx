@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import {RefreshControl} from 'react-native';
 import {
-  Text,
   EventList,
   EventListRenderItem,
   EventListEmptyComponent,
@@ -10,37 +10,59 @@ import {
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './style';
-import {search} from '../../utils/search';
-import {selectTypeOfEvent} from '../../utils/selectType';
-import {MyEvent, MyEventType} from '../../types';
-import {getMyEventsAsync} from '../../store/myEvent';
+import {search, selectTypeOfEvent} from '../../utils';
+import {MyEvent, MyEventType, Participant} from '../../types';
+import {
+  getActiveMyEventsAsync,
+  getAttendedMyEventsByUserIdAsync,
+  joinMyEventAsync,
+} from '../../store/myEvent';
+import {useSelector} from 'react-redux';
 
 const MainScreen = () => {
   const loading = useAppSelector(state => state.myEvents.isLoading);
-  const events: MyEvent[] = useAppSelector(state => state.myEvents.myEvents);
+  const events: MyEvent[] = useAppSelector(
+    state => state.myEvents.activeMyEvents,
+  );
+  const userId: number = useAppSelector(state => state.auth.userId);
   const myEventTypes: MyEventType[] = useAppSelector(
     state => state.myEventTypes.myEventTypes,
   );
+  const [participant, setParticipant] = useState<Participant>({
+    id: 0,
+    myEventId: 0,
+    userId: 0,
+  });
   const [searchText, setSearchText] = useState('');
   const [copyOfEvents, setCopyOfEvents] = useState(events);
   const [selectedEvent, setSelectedEvent] = useState(-1);
   const [selectedEventType, setSelectedEventType] = useState(-1);
+  const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getMyEventsAsync());
+    dispatch(getActiveMyEventsAsync(userId));
   }, []);
 
   useEffect(() => {
     console.log('events', events);
     setCopyOfEvents(events);
+    setRefreshing(false);
   }, [events]);
 
   useEffect(() => {
     if (searchText !== '') setCopyOfEvents(search(events, searchText));
     else setCopyOfEvents(events);
   }, [searchText]);
+
+  useEffect(() => {
+    if (participant.myEventId !== 0) {
+      dispatch(joinMyEventAsync(participant));
+      // dispatch(getActiveMyEventsAsync(userId));
+      // dispatch(getAttendedMyEventsByUserIdAsync(userId));
+    }
+  }, [participant]);
 
   const onChangeSearchText = (e: string) => {
     setSearchText(e);
@@ -56,10 +78,25 @@ const MainScreen = () => {
     } else setCopyOfEvents(events);
   };
 
-  const selectEvent = (item: any) => {
+  const selectEvent = ({item, index}: any) => {
     console.log('selectEvent.item', item);
-    if (item.item.id === selectedEvent) setSelectedEvent(-1);
-    else setSelectedEvent(item.item.id);
+    if (item.id === selectedEvent) setSelectedEvent(-1);
+    else setSelectedEvent(item.id);
+  };
+
+  const joinEvent = ({item, index}: any) => {
+    console.log('joinEvent', item);
+    setParticipant({
+      id: 0,
+      myEventId: item.id,
+      userId: userId,
+    });
+    setSelectedEvent(-1);
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    dispatch(getActiveMyEventsAsync(userId));
   };
 
   return (
@@ -67,12 +104,13 @@ const MainScreen = () => {
       <EventList
         data={copyOfEvents}
         extraData={copyOfEvents}
-        renderItem={(item: any) => {
+        renderItem={({item, index}: any) => {
           return (
             <EventListRenderItem
               item={item}
-              selectEvent={() => selectEvent(item)}
+              selectEvent={() => selectEvent({item})}
               selectedEvent={selectedEvent}
+              joinEvent={() => joinEvent({item})}
             />
           );
         }}
@@ -84,6 +122,9 @@ const MainScreen = () => {
             selectEventType={(id: number) => selectEventType(id)}
             selectedEventType={selectedEventType}
           />
+        }
+        RefreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         // ListFooterComponent={}
         // ListFooterComponentStyle={}

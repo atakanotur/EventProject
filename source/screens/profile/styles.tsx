@@ -43,12 +43,23 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
   },
   bottom: {
-    flex: 2,
+    flex: 3,
     backgroundColor: colors.white,
     borderTopWidth: 2,
     borderTopColor: colors.red,
     paddingRight: 5,
     paddingLeft: 5,
+    paddingTop: 5,
+  },
+  bottomTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  selectAttendedEvents: {
+    height: 20
+  },
+  selectCreatedEvents: {
+    height: 20
   },
   modalCentered: {},
   modalContainer: {},
