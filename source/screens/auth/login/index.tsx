@@ -21,8 +21,8 @@ const RegisterScreen = ({navigation}: any) => {
   });
   const [rememberSelect, setRememberSelect] = useState(false);
 
-  const navigateToTabNavigator = ({email, password}: UserForLogin) => {
-    dispatch(loginAsync({email, password})).then((response: any) => {
+  const navigateToTabNavigator = async({email, password}: UserForLogin) => {
+    await dispatch(loginAsync({email, password})).then((response: any) => {
       if (response.payload?.status === 200) {
         navigation.dispatch(
           CommonActions.reset({
@@ -40,7 +40,7 @@ const RegisterScreen = ({navigation}: any) => {
     const getUser = async () => {
       const email: any = await AsyncStorage.getItem('eventProjectEmail');
       const password: any = await AsyncStorage.getItem('eventProjectPassword');
-      navigateToTabNavigator({email, password});
+      await navigateToTabNavigator({email, password});
     };
     getUser();
   }, []);

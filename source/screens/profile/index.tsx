@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import {
   Button,
+  CategoryButtons,
   EventList,
   EventListEmptyComponent,
-  EventListHeaderComponent,
   EventListRenderItem,
   Loading,
 } from '../../components';
@@ -25,15 +25,11 @@ import {
   addMyEventAsync,
   deleteMyEventAsync,
   getActiveMyEventsAsync,
-  getMyEventByIdAsync,
   getMyEventsByUserIdAsync,
   leaveMyEventAsync,
 } from '../../store/myEvent';
-import {MyEvent, MyEventType, Participant} from '../../types';
-import {
-  deleteParticipantAsync,
-  getParticipantsAsync,
-} from '../../store/participant';
+import {MyEvent, Participant} from '../../types';
+import {getParticipantsAsync} from '../../store/participant';
 import {getAttendedMyEventsByUserIdAsync} from '../../store/myEvent';
 
 const source = require('../../theme/a1.png');
@@ -57,7 +53,9 @@ const ProfileScreen = ({navigation}: any) => {
     state => state.myEvents.myEventsByUserId,
   );
 
-  const deletedMyEvent = useAppSelector(state => state.myEvents.myEvent);
+  const deletedMyEvent: MyEvent = useAppSelector(
+    state => state.myEvents.myEvent,
+  );
 
   const loading = useAppSelector(state => state.myEvents.isLoading);
 
@@ -75,7 +73,7 @@ const ProfileScreen = ({navigation}: any) => {
   const [participant, setParticipant] = useState<Participant>({
     id: 0,
     myEventId: 0,
-    userId: 0,
+    userId,
   });
 
   const [selectedEvent, setSelectedEvent] = useState(-1);
@@ -102,18 +100,6 @@ const ProfileScreen = ({navigation}: any) => {
     dispatch(getAttendedMyEventsByUserIdAsync(userId));
     dispatch(getMyEventsByUserIdAsync(userId));
   }, []);
-
-  useEffect(() => {
-    if (participant.myEventId !== 0) {
-      dispatch(leaveMyEventAsync(participant));
-      dispatch(getAttendedMyEventsByUserIdAsync(userId));
-      dispatch(getActiveMyEventsAsync(userId));
-    }
-  }, [participant]);
-
-  useEffect(() => {
-    if (deletedMyEvent !== null) dispatch(deleteMyEventAsync(deletedMyEvent));
-  }, [deletedMyEvent]);
 
   const handleConfirmDateTime = (e: any) => {
     console.log('e', e);
@@ -180,24 +166,26 @@ const ProfileScreen = ({navigation}: any) => {
     setSelectedEvent(-1);
   };
 
-  const selectEvent = (item: any) => {
+  const selectEvent = ({item, index}: any) => {
+    setParticipant({
+      ...participant,
+      myEventId: item.id,
+    });
     if (item.id === selectedEvent) setSelectedEvent(-1);
     else setSelectedEvent(item.id);
   };
 
-  const leaveEvent = ({item, index}: any) => {
-    console.log('leaveEvent.item', item);
-    setParticipant({
-      id: 0,
-      myEventId: item.id,
-      userId,
-    });
+  const leaveEvent = async () => {
+    if (participant.myEventId !== 0)
+      await dispatch(leaveMyEventAsync(participant));
+    await dispatch(getAttendedMyEventsByUserIdAsync(userId));
+    await dispatch(getActiveMyEventsAsync(userId));
     setSelectedEvent(-1);
   };
 
-  const deleteEvent = ({item, index}: any) => {
-    console.log('deleteEvent.item', item);
-    dispatch(getMyEventByIdAsync(item.myEventId));
+  const deleteEvent = async ({item, index}: any) => {
+    await dispatch(deleteMyEventAsync(item));
+    await dispatch(getMyEventsByUserIdAsync(userId));
     setSelectedEvent(-1);
   };
 
@@ -228,27 +216,12 @@ const ProfileScreen = ({navigation}: any) => {
           </TouchableOpacity>
         </ImageBackground>
       </View>
-      <View>
-        <View>
-          <Button onPress={selectAttendedEvents} text="Attended Events" />
-        </View>
-        <View>
-          <Button onPress={selectCreatedEvents} text="Created Events" />
-        </View>
-      </View>
       <View style={styles.bottom}>
-        <View style={styles.bottomTop}>
-          <Button
-            onPress={selectAttendedEvents}
-            text="Attended Events"
-            style={styles.selectAttendedEvents}
-          />
-          <Button
-            onPress={selectCreatedEvents}
-            text="Created Events"
-            style={styles.selectCreatedEvents}
-          />
-        </View>
+        <CategoryButtons
+          selectAttendedEvents={selectAttendedEvents}
+          selectCreatedEvents={selectCreatedEvents}
+          selectedEventsCategory={selectedEventsCategory}
+        />
         {selectedEventsCategory == 0 ? (
           <EventList
             data={attendedMyEvents}
@@ -257,9 +230,9 @@ const ProfileScreen = ({navigation}: any) => {
               return (
                 <EventListRenderItem
                   item={item}
-                  selectEvent={selectEvent}
+                  selectEvent={() => selectEvent({item})}
                   selectedEvent={selectedEvent}
-                  leaveEvent={() => leaveEvent({item})}
+                  leaveEvent={() => leaveEvent()}
                 />
               );
             }}
@@ -279,7 +252,7 @@ const ProfileScreen = ({navigation}: any) => {
               return (
                 <EventListRenderItem
                   item={item}
-                  selectEvent={selectEvent}
+                  selectEvent={() => selectEvent({item})}
                   selectedEvent={selectedEvent}
                   deleteEvent={() => deleteEvent({item})}
                 />
@@ -294,7 +267,6 @@ const ProfileScreen = ({navigation}: any) => {
             }
           />
         )}
-        <Loading visible={loading} />
       </View>
       <AddEventModal
         visible={addEventModalVisible}

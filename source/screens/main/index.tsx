@@ -17,7 +17,6 @@ import {
   getAttendedMyEventsByUserIdAsync,
   joinMyEventAsync,
 } from '../../store/myEvent';
-import {useSelector} from 'react-redux';
 
 const MainScreen = () => {
   const loading = useAppSelector(state => state.myEvents.isLoading);
@@ -31,7 +30,7 @@ const MainScreen = () => {
   const [participant, setParticipant] = useState<Participant>({
     id: 0,
     myEventId: 0,
-    userId: 0,
+    userId,
   });
   const [searchText, setSearchText] = useState('');
   const [copyOfEvents, setCopyOfEvents] = useState(events);
@@ -46,7 +45,6 @@ const MainScreen = () => {
   }, []);
 
   useEffect(() => {
-    console.log('events', events);
     setCopyOfEvents(events);
     setRefreshing(false);
   }, [events]);
@@ -55,14 +53,6 @@ const MainScreen = () => {
     if (searchText !== '') setCopyOfEvents(search(events, searchText));
     else setCopyOfEvents(events);
   }, [searchText]);
-
-  useEffect(() => {
-    if (participant.myEventId !== 0) {
-      dispatch(joinMyEventAsync(participant));
-      // dispatch(getActiveMyEventsAsync(userId));
-      // dispatch(getAttendedMyEventsByUserIdAsync(userId));
-    }
-  }, [participant]);
 
   const onChangeSearchText = (e: string) => {
     setSearchText(e);
@@ -79,24 +69,25 @@ const MainScreen = () => {
   };
 
   const selectEvent = ({item, index}: any) => {
-    console.log('selectEvent.item', item);
+    setParticipant({
+      ...participant,
+      myEventId: item.id,
+    });
     if (item.id === selectedEvent) setSelectedEvent(-1);
     else setSelectedEvent(item.id);
   };
 
-  const joinEvent = ({item, index}: any) => {
-    console.log('joinEvent', item);
-    setParticipant({
-      id: 0,
-      myEventId: item.id,
-      userId: userId,
-    });
+  const joinEvent = async () => {
+    if (participant.myEventId !== 0)
+      await dispatch(joinMyEventAsync(participant));
+    await dispatch(getActiveMyEventsAsync(userId));
+    await dispatch(getAttendedMyEventsByUserIdAsync(userId));
     setSelectedEvent(-1);
   };
 
-  const onRefresh = () => {
+  const onRefresh = async() => {
     setRefreshing(true);
-    dispatch(getActiveMyEventsAsync(userId));
+    await dispatch(getActiveMyEventsAsync(userId));
   };
 
   return (
@@ -108,9 +99,9 @@ const MainScreen = () => {
           return (
             <EventListRenderItem
               item={item}
-              selectEvent={() => selectEvent({item})}
               selectedEvent={selectedEvent}
-              joinEvent={() => joinEvent({item})}
+              selectEvent={() => selectEvent({item})}
+              joinEvent={() => joinEvent()}
             />
           );
         }}
@@ -126,8 +117,6 @@ const MainScreen = () => {
         RefreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        // ListFooterComponent={}
-        // ListFooterComponentStyle={}
       />
       {/* <Loading visible={loading} /> */}
     </SafeAreaView>

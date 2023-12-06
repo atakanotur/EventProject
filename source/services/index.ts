@@ -65,7 +65,7 @@ export const getMyEventsByUserId = async (userId: number) => {
 };
 
 export const getMyEventById = async (myEventId: number) => {
-  const endpoint = `${baseUrl}/MyEvents/getmyeventbyid?myEventId=${myEventId}`;
+  const endpoint = `${baseUrl}/MyEvents/getbymyeventid?myEventId=${myEventId}`;
   return await getResource(endpoint);
 };
 

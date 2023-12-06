@@ -99,7 +99,7 @@ interface InitialState extends InitialStateBase {
   activeMyEvents: MyEvent[];
   attendedMyEvents: MyEvent[];
   myEventsByUserId: MyEvent[];
-  myEvent: MyEvent | null;
+  myEvent: MyEvent;
 }
 
 const initialState: InitialState = {
@@ -107,7 +107,7 @@ const initialState: InitialState = {
   activeMyEvents: [],
   attendedMyEvents: [],
   myEventsByUserId: [],
-  myEvent: null,
+  myEvent: {} as MyEvent,
   isLoading: false,
   error: null,
 };
@@ -134,6 +134,7 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMyEventByIdAsync.fulfilled, (state, action) => {
+      console.log('getMyEventsByUserIdAsync.action', action.payload.data);
       state.myEvent = action.payload.data;
       state.isLoading = false;
     });
@@ -220,7 +221,7 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(joinMyEventAsync.fulfilled, (state, action) => {
-      state.joinedMessage = action.state.isLoading = false;
+      state.isLoading = false;
     });
     builder.addCase(joinMyEventAsync.rejected, (state, action) => {
       state.error = action.error;

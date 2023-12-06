@@ -4,6 +4,7 @@ import {
   EventListEmptyComponent,
   EventListHeaderComponent,
   CheckBox,
+  CategoryButtons,
 } from './molecules';
 import {Loading, EventList} from './organisms';
 
@@ -17,4 +18,5 @@ export {
   EventListEmptyComponent,
   EventListHeaderComponent,
   EventList,
+  CategoryButtons,
 };

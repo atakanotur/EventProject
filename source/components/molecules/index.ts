@@ -4,6 +4,7 @@ import EventListHeaderComponent from './eventListItems/headerComponent';
 import DropDown from './customDropDown';
 import Modal from './customModal';
 import CheckBox from './customCheckBox';
+import CategoryButtons from './categoryButtons';
 
 export {
   EventListRenderItem,
@@ -11,5 +12,6 @@ export {
   EventListHeaderComponent,
   DropDown,
   Modal,
-  CheckBox
+  CheckBox,
+  CategoryButtons
 };
