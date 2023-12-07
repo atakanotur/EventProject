@@ -6,7 +6,6 @@ import {
   RefreshControl,
 } from 'react-native';
 import {
-  Button,
   CategoryButtons,
   EventList,
   EventListEmptyComponent,
@@ -53,10 +52,6 @@ const ProfileScreen = ({navigation}: any) => {
     state => state.myEvents.myEventsByUserId,
   );
 
-  const deletedMyEvent: MyEvent = useAppSelector(
-    state => state.myEvents.myEvent,
-  );
-
   const loading = useAppSelector(state => state.myEvents.isLoading);
 
   const [myEvent, setMyEvent] = useState<MyEvent>({
@@ -89,8 +84,6 @@ const ProfileScreen = ({navigation}: any) => {
   const [selectedEventsCategory, setSelectedEventCategory] = useState(0);
 
   useEffect(() => {
-    console.log('attendedMyEvents', attendedMyEvents);
-    console.log('createdMyEvents', createdMyEvents);
     setRefreshing(false);
   }, [attendedMyEvents, createdMyEvents]);
 
@@ -241,6 +234,7 @@ const ProfileScreen = ({navigation}: any) => {
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={onRefreshAttendedList}
+                tintColor={colors.white}
               />
             }
           />
@@ -263,10 +257,12 @@ const ProfileScreen = ({navigation}: any) => {
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={onRefreshCreatedList}
+                tintColor={colors.white}
               />
             }
           />
         )}
+        <Loading visible={loading} />
       </View>
       <AddEventModal
         visible={addEventModalVisible}

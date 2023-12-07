@@ -17,6 +17,7 @@ import {
   getAttendedMyEventsByUserIdAsync,
   joinMyEventAsync,
 } from '../../store/myEvent';
+import colors from '../../theme/colors';
 
 const MainScreen = () => {
   const loading = useAppSelector(state => state.myEvents.isLoading);
@@ -115,10 +116,10 @@ const MainScreen = () => {
           />
         }
         RefreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.red}/>
         }
       />
-      {/* <Loading visible={loading} /> */}
+      <Loading visible={loading} />
     </SafeAreaView>
   );
 };
