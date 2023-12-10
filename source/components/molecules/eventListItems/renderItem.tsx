@@ -22,6 +22,7 @@ interface EventListRenderItemProps {
   joinEvent?: (item: any) => void;
   leaveEvent?: (item: any) => void;
   deleteEvent?: (item: any) => void;
+  updateEvent?: (item: any) => void;
 }
 
 interface EventButtonProps {
@@ -31,8 +32,15 @@ interface EventButtonProps {
 }
 
 export const EventListRenderItem = (props: EventListRenderItemProps) => {
-  const {item, selectEvent, selectedEvent, joinEvent, leaveEvent, deleteEvent} =
-    props;
+  const {
+    item,
+    selectEvent,
+    selectedEvent,
+    joinEvent,
+    leaveEvent,
+    deleteEvent,
+    updateEvent,
+  } = props;
   const id = item.id;
   const containerHeight = useSharedValue(120);
   const flex = useSharedValue(0);
@@ -127,11 +135,22 @@ export const EventListRenderItem = (props: EventListRenderItemProps) => {
             onPress={() => leaveEvent(item)}
           />
         )}
-        {deleteEvent && (
-          <EventButton
-            buttonText="Delete Event"
-            onPress={() => deleteEvent(item)}
-          />
+        {deleteEvent && updateEvent && (
+          <Animated.View
+            style={{
+              flex: selectedEvent === id ? 10 : 0,
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+            }}>
+            <EventButton
+              buttonText="Delete Event"
+              onPress={() => deleteEvent(item)}
+            />
+            <EventButton
+              buttonText="Update Event"
+              onPress={() => updateEvent(item)}
+            />
+          </Animated.View>
         )}
       </Animated.View>
     </TouchableOpacity>

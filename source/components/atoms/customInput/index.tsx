@@ -1,5 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, TextInput, TextStyle, ViewStyle, StyleSheet, KeyboardTypeOptions, KeyboardType} from 'react-native';
+import {
+  View,
+  TextInput,
+  TextStyle,
+  ViewStyle,
+  StyleSheet,
+  KeyboardTypeOptions,
+  KeyboardType,
+} from 'react-native';
 import {TextInputProps} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -14,7 +22,8 @@ interface OwnProps {
   iconName?: any;
   iconColor?: any;
   iconSize?: any;
-  keyboardType?: KeyboardType
+  keyboardType?: KeyboardType;
+  defaultValue?: any;
 }
 
 export type CustomInputProps = OwnProps & TextInputProps;
@@ -30,7 +39,8 @@ const CustomInput = (props: CustomInputProps) => {
     iconName,
     iconColor,
     iconSize,
-    keyboardType
+    keyboardType,
+    defaultValue,
   } = props;
   return (
     <View style={[styles.containerStyle, containerStyle]}>
@@ -42,6 +52,7 @@ const CustomInput = (props: CustomInputProps) => {
         selectionColor={selectionColor}
         placeholderTextColor={placeholderTextColor}
         keyboardType={keyboardType}
+        defaultValue={defaultValue}
       />
     </View>
   );

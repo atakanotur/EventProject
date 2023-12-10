@@ -3,5 +3,13 @@ import RegisterScreen from './auth/register';
 import MainScreen from './main';
 import ProfileScreen from './profile';
 import CreateScreen from './create';
+import UpdateScreen from './update';
 
-export {LoginScreen, RegisterScreen, MainScreen, ProfileScreen, CreateScreen};
+export {
+  LoginScreen,
+  RegisterScreen,
+  MainScreen,
+  ProfileScreen,
+  CreateScreen,
+  UpdateScreen,
+};

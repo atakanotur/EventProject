@@ -24,12 +24,14 @@ import {
   addMyEventAsync,
   deleteMyEventAsync,
   getActiveMyEventsAsync,
+  getMyEventByIdAsync,
   getMyEventsByUserIdAsync,
   leaveMyEventAsync,
 } from '../../store/myEvent';
 import {MyEvent, Participant} from '../../types';
 import {getParticipantsAsync} from '../../store/participant';
 import {getAttendedMyEventsByUserIdAsync} from '../../store/myEvent';
+import {getMyEventById} from '../../services';
 
 const source = require('../../theme/a1.png');
 
@@ -79,7 +81,7 @@ const ProfileScreen = ({navigation}: any) => {
 
   const createEvent = () => {
     navigation.navigate('Create');
-  }
+  };
 
   const selectAttendedEvents = () => {
     setSelectedEventCategory(0);
@@ -112,6 +114,11 @@ const ProfileScreen = ({navigation}: any) => {
     await dispatch(deleteMyEventAsync(item));
     await dispatch(getMyEventsByUserIdAsync(userId));
     setSelectedEvent(-1);
+  };
+
+  const updateEvent = async ({item, index}: any) => {
+    await dispatch(getMyEventByIdAsync(item.id));
+    navigation.navigate('Update');
   };
 
   const onRefreshCreatedList = () => {
@@ -181,6 +188,7 @@ const ProfileScreen = ({navigation}: any) => {
                   selectEvent={() => selectEvent({item})}
                   selectedEvent={selectedEvent}
                   deleteEvent={() => deleteEvent({item})}
+                  updateEvent={() => updateEvent({item})}
                 />
               );
             }}
