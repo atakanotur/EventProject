@@ -1,10 +1,10 @@
-import {StyleSheet, View, ViewStyle} from 'react-native';
+import {StyleSheet, View, ViewStyle, StyleProp} from 'react-native';
 
 interface CustomModalProps {
   visible: boolean;
   children: any;
-  containerStyle: ViewStyle;
-  modalStyle: ViewStyle;
+  containerStyle: StyleProp<ViewStyle>;
+  modalStyle: StyleProp<ViewStyle>;
   onBacksidePress: any;
 }
 
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   modal: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 

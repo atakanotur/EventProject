@@ -5,7 +5,10 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
 import {MyEvent} from '../../types';
-import {addMyEventAsync, getMyEventsByUserIdAsync, updateMyEventAsync} from '../../store/myEvent';
+import {
+  getMyEventsByUserIdAsync,
+  updateMyEventAsync,
+} from '../../store/myEvent';
 import {EventTypeListRenderItem} from '../../components/molecules';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {EventTypeList} from '../../components/organisms';

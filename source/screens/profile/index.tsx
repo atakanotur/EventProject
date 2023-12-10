@@ -14,14 +14,11 @@ import {
 } from '../../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
-import {AddEventModal} from '../../components/organisms/addEventModal';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from '../../theme/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
-  addMyEventAsync,
   deleteMyEventAsync,
   getActiveMyEventsAsync,
   getMyEventByIdAsync,
@@ -31,7 +28,6 @@ import {
 import {MyEvent, Participant} from '../../types';
 import {getParticipantsAsync} from '../../store/participant';
 import {getAttendedMyEventsByUserIdAsync} from '../../store/myEvent';
-import {getMyEventById} from '../../services';
 
 const source = require('../../theme/a1.png');
 

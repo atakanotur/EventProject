@@ -1,12 +1,4 @@
-import {
-  View,
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  TouchableOpacity,
-  ViewStyle,
-} from 'react-native';
-import {Text} from '../../atoms';
+import {StyleProp, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import colors from '../../../theme/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 

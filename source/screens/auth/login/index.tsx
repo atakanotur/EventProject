@@ -16,12 +16,12 @@ const RegisterScreen = ({navigation}: any) => {
   const loading = useAppSelector(state => state.auth.isLoading);
   const [opening, setOpening] = useState(true);
   const [loginState, setLoginState] = useState({
-    email: 'Atakan',
-    password: 'Otur',
+    email: '',
+    password: '',
   });
   const [rememberSelect, setRememberSelect] = useState(false);
 
-  const navigateToTabNavigator = async({email, password}: UserForLogin) => {
+  const navigateToTabNavigator = async ({email, password}: UserForLogin) => {
     await dispatch(loginAsync({email, password})).then((response: any) => {
       if (response.payload?.status === 200) {
         navigation.dispatch(

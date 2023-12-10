@@ -10,6 +10,7 @@ import {loginAsync, registerAsync} from '../../../store/auth';
 
 const RegisterScreen = ({navigation}: any) => {
   const token = useAppSelector(state => state.auth.token);
+
   const error = useAppSelector(state => state.auth.error);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const RegisterScreen = ({navigation}: any) => {
     });
     console.log('password', registerState.lastName);
   };
+
   const onChangeEmail = (e: string) => {
     setRegisterState({
       ...registerState,
@@ -71,10 +73,10 @@ const RegisterScreen = ({navigation}: any) => {
     console.log('password', registerState.password);
   };
 
-  const remember = () => {};
   const login = () => {
     navigation.navigate('Login');
   };
+
   const register = () => {
     dispatch(registerAsync(registerState));
   };

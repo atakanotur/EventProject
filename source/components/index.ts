@@ -5,7 +5,7 @@ import {
   EventListHeaderComponent,
   CheckBox,
   CategoryButtons,
-  EventTypeListRenderItem
+  EventTypeListRenderItem,
 } from './molecules';
 import {Loading, EventList} from './organisms';
 
@@ -20,5 +20,5 @@ export {
   EventListHeaderComponent,
   EventList,
   CategoryButtons,
-  EventTypeListRenderItem
+  EventTypeListRenderItem,
 };

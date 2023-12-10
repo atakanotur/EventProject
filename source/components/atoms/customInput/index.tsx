@@ -1,23 +1,23 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React from 'react';
 import {
   View,
   TextInput,
   TextStyle,
   ViewStyle,
   StyleSheet,
-  KeyboardTypeOptions,
   KeyboardType,
+  ColorValue,
 } from 'react-native';
-import {TextInputProps} from 'react-native';
+import {TextInputProps, StyleProp} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface OwnProps {
   label?: string;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   placeholder?: string;
-  style?: TextStyle;
-  selectionColor?: TextStyle;
-  placeholderTextColor?: TextStyle;
+  style?: StyleProp<TextStyle>;
+  selectionColor?: ColorValue;
+  placeholderTextColor?: ColorValue;
   onChangeText?: any;
   iconName?: any;
   iconColor?: any;

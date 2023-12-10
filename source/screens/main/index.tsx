@@ -86,7 +86,7 @@ const MainScreen = () => {
     setSelectedEvent(-1);
   };
 
-  const onRefresh = async() => {
+  const onRefresh = async () => {
     setRefreshing(true);
     await dispatch(getActiveMyEventsAsync(userId));
   };
@@ -116,7 +116,11 @@ const MainScreen = () => {
           />
         }
         RefreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.red}/>
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.red}
+          />
         }
       />
       <Loading visible={loading} />

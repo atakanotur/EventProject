@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   TouchableOpacity,
-  View,
   StyleSheet,
   StyleProp,
   ColorValue,
@@ -9,7 +8,7 @@ import {
 } from 'react-native';
 import {Text} from '../../atoms';
 import colors from '../../../theme/colors';
-import {MyEvent, MyEventType} from '../../../types';
+import {MyEvent} from '../../../types';
 
 interface EventTypeListRenderItemProps {
   item: MyEvent;

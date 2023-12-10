@@ -1,6 +1,5 @@
 import {FlatList, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {MyEventType} from '../../../types';
-import colors from '../../../theme/colors';
 
 interface EventTypeListProps {
   data?: MyEventType[];

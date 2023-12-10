@@ -11,7 +11,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {EventTypeList} from '../../components/organisms';
 import colors from '../../theme/colors';
 import {CommonActions} from '@react-navigation/native';
-import moment, {ISO_8601} from 'moment';
+import moment from 'moment';
 
 const CreateScreen = ({navigation}: any) => {
   const dispatch = useAppDispatch();
