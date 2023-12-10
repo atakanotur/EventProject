@@ -1,15 +1,15 @@
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {MyEventType} from '../../../types';
+import colors from '../../../theme/colors';
 
 interface EventTypeListProps {
   data?: MyEventType[];
   extraData?: MyEventType[];
   renderItem?: any;
-  ListEmptyComponent?: any;
-  ListHeaderComponent?: any;
-  ListHeaderComponentStyle?: any;
-  ListFooterComponent?: any;
-  ListFooterComponentStyle?: any;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+  horizontal?: boolean;
+  numColumns?: number;
+  scrollEnabled?: boolean;
 }
 
 const EventTypeList = (props: EventTypeListProps) => {
@@ -17,34 +17,32 @@ const EventTypeList = (props: EventTypeListProps) => {
     data,
     extraData,
     renderItem,
-    ListEmptyComponent,
-    ListHeaderComponent,
-    ListHeaderComponentStyle,
-    ListFooterComponent,
-    ListFooterComponentStyle,
+    contentContainerStyle,
+    horizontal,
+    numColumns,
+    scrollEnabled
   } = props;
+
   return (
     <FlatList
       data={data}
       extraData={extraData}
       renderItem={renderItem}
-      ListEmptyComponent={ListEmptyComponent}
-      ListHeaderComponent={ListHeaderComponent}
-      ListHeaderComponentStyle={ListHeaderComponentStyle}
-      ListFooterComponent={ListFooterComponent}
-      ListFooterComponentStyle={ListFooterComponentStyle}
-      contentContainerStyle={styles.contentContainerStyle}
-      style={styles.eventTypeList}
+      horizontal={horizontal}
+      contentContainerStyle={[
+        styles.contentContainerStyle,
+        contentContainerStyle,
+      ]}
+      showsHorizontalScrollIndicator={false}
+      numColumns={numColumns}
+      scrollEnabled={scrollEnabled}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  eventTypeList: {
-    flex: 1,
-  },
   contentContainerStyle: {
-    flex: 1,
+    alignItems: 'center',
   },
 });
 

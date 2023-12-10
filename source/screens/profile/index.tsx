@@ -36,12 +36,6 @@ const source = require('../../theme/a1.png');
 const ProfileScreen = ({navigation}: any) => {
   const dispatch = useAppDispatch();
 
-  const [addEventModalVisible, setAddEventModalVisible] = useState(false);
-
-  const [eventDate, setEventDate] = useState(new Date());
-
-  const [eventDateVisible, setEventDateVisible] = useState(false);
-
   const userId = useAppSelector(state => state.auth.userId);
 
   const attendedMyEvents: MyEvent[] = useAppSelector(
@@ -53,17 +47,6 @@ const ProfileScreen = ({navigation}: any) => {
   );
 
   const loading = useAppSelector(state => state.myEvents.isLoading);
-
-  const [myEvent, setMyEvent] = useState<MyEvent>({
-    id: 0,
-    myEventTypeId: 0,
-    userId: 0,
-    name: '',
-    address: '',
-    date: new Date(),
-    participantLimit: 0,
-    participantCount: 0,
-  });
 
   const [participant, setParticipant] = useState<Participant>({
     id: 0,
@@ -94,60 +77,9 @@ const ProfileScreen = ({navigation}: any) => {
     dispatch(getMyEventsByUserIdAsync(userId));
   }, []);
 
-  const handleConfirmDateTime = (e: any) => {
-    console.log('e', e);
-    setEventDate(e);
-    setEventDateVisible(false);
-    console.log('handleConfirmDateTime', eventDate);
-  };
-
-  const openCreateEvent = () => {
-    setAddEventModalVisible(true);
-    console.log('addEvent', addEventModalVisible);
-  };
-
   const createEvent = () => {
-    dispatch(addMyEventAsync(myEvent));
-  };
-
-  const closeIconOnPress = () => {
-    changeAddEventModalVisible();
-    console.log('closeIconOnPress', addEventModalVisible);
-  };
-
-  const changeEventDateVisible = () => {
-    setEventDateVisible(!eventDateVisible);
-    console.log('changeEventDateVisible', eventDateVisible);
-  };
-
-  const changeAddEventModalVisible = () => {
-    setAddEventModalVisible(!addEventModalVisible);
-    console.log('changeAddEventModalVisible', addEventModalVisible);
-  };
-
-  const onChangeEventNameText = (e: string) => {
-    console.log('onChangeEventNameText', e);
-    setMyEvent({
-      ...myEvent,
-      name: e,
-    });
-  };
-
-  const onChangeEventAddressText = (e: string) => {
-    console.log('onChangeEventAddressText', e);
-    setMyEvent({
-      ...myEvent,
-      address: e,
-    });
-  };
-
-  const onChangeParticipantLimitText = (e: number) => {
-    console.log('onChangeParticipantLimitText', e);
-    setMyEvent({
-      ...myEvent,
-      participantLimit: e,
-    });
-  };
+    navigation.navigate('Create');
+  }
 
   const selectAttendedEvents = () => {
     setSelectedEventCategory(0);
@@ -204,7 +136,7 @@ const ProfileScreen = ({navigation}: any) => {
           style={styles.topImageBackground}
           imageStyle={styles.topImageBackgroundImage}
           resizeMode="contain">
-          <TouchableOpacity onPress={openCreateEvent}>
+          <TouchableOpacity onPress={createEvent}>
             <Icon name="add-circle-outline" color={colors.red} size={75} />
           </TouchableOpacity>
         </ImageBackground>
@@ -264,25 +196,6 @@ const ProfileScreen = ({navigation}: any) => {
         )}
         <Loading visible={loading} />
       </View>
-      <AddEventModal
-        visible={addEventModalVisible}
-        transparent={true}
-        animationType="slide"
-        closeIconOnPress={closeIconOnPress}
-        eventDateOnPress={changeEventDateVisible}
-        eventDateValue={eventDate}
-        onChangeEventNameText={onChangeEventNameText}
-        onChangeEventAddressText={onChangeEventAddressText}
-        onChangeParticipantLimitText={onChangeParticipantLimitText}
-        createButtonOnPress={createEvent}
-      />
-      <DateTimePickerModal
-        testID="test"
-        isVisible={eventDateVisible}
-        mode="datetime"
-        onConfirm={handleConfirmDateTime}
-        onCancel={changeEventDateVisible}
-      />
     </SafeAreaView>
   );
 };

@@ -5,6 +5,7 @@ import DropDown from './customDropDown';
 import Modal from './customModal';
 import CheckBox from './customCheckBox';
 import CategoryButtons from './categoryButtons';
+import EventTypeListRenderItem from './eventTypeListItems/renderItem';
 
 export {
   EventListRenderItem,
@@ -13,5 +14,6 @@ export {
   DropDown,
   Modal,
   CheckBox,
-  CategoryButtons
+  CategoryButtons,
+  EventTypeListRenderItem
 };

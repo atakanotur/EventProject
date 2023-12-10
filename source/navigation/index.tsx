@@ -9,6 +9,7 @@ import {
   RegisterScreen,
   MainScreen,
   ProfileScreen,
+  CreateScreen,
 } from '../screens';
 import colors from '../theme/colors';
 
@@ -16,6 +17,7 @@ const RootStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 const EventStack = createNativeStackNavigator();
+const CreateStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
 
 const AuthNavigator = () => {
@@ -40,6 +42,14 @@ const ProfileNavigator = () => {
     <ProfileStack.Navigator screenOptions={{headerShown: false}}>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
     </ProfileStack.Navigator>
+  );
+};
+
+const CreateNavigator = () => {
+  return (
+    <CreateStack.Navigator screenOptions={{headerShown: false}}>
+      <CreateStack.Screen name="Create Event" component={CreateScreen} />
+    </CreateStack.Navigator>
   );
 };
 
@@ -78,6 +88,11 @@ const RootNavigator = () => {
       <RootStack.Screen
         name="Tab"
         component={TabNavigator}
+        options={{headerShown: false}}
+      />
+      <RootStack.Screen
+        name="Create"
+        component={CreateNavigator}
         options={{headerShown: false}}
       />
     </RootStack.Navigator>

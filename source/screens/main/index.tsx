@@ -9,7 +9,7 @@ import {
 } from '../../components';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {styles} from './style';
+import {styles} from './styles';
 import {search, selectTypeOfEvent} from '../../utils';
 import {MyEvent, MyEventType, Participant} from '../../types';
 import {
