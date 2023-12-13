@@ -1,61 +1,48 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {Input, Text} from '../../atoms';
 import colors from '../../../theme/colors';
-import {MyEventType} from '../../../types';
+import {MyEvent, MyEventType} from '../../../types';
+import {EventTypeList} from '../../organisms';
+import EventTypeListRenderItem from '../eventTypeListItems/renderItem';
 
 interface OwnProps {
   myEventTypes: MyEventType[];
   onChangeText: any;
-  selectEventType: any;
+  selectEventType: (item: MyEvent, index: number) => void;
   selectedEventType: number;
 }
 
 const EventListHeaderComponent = (props: OwnProps) => {
   const {myEventTypes, onChangeText, selectEventType, selectedEventType} =
     props;
-  const renderItem = ({item, index}: any) => {
-    const id = item.id;
-    return (
-      <TouchableOpacity
-        style={[
-          styles.type,
-          selectedEventType === index
-            ? {backgroundColor: colors.purple, borderColor: colors.purple}
-            : null,
-        ]}
-        onPress={() => selectEventType(id)}>
-        <Text text={item.name} />
-      </TouchableOpacity>
-    );
-  };
   return (
     <View style={styles.container}>
-      <View style={styles.types}>
-        <FlatList
-          data={myEventTypes}
-          extraData={myEventTypes}
-          renderItem={renderItem}
-          horizontal={true}
-          contentContainerStyle={styles.typeList}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <View style={styles.search}>
-        <Input
-          containerStyle={styles.searchInputContainer}
-          style={styles.searchInput}
-          onChangeText={(e: string) => onChangeText(e)}
-          iconName="search-outline"
-          iconColor={colors.white}
-          iconSize={30}
-        />
-      </View>
+      <EventTypeList
+        data={myEventTypes}
+        extraData={myEventTypes}
+        horizontal={true}
+        renderItem={({item, index}: any) => {
+          return (
+            <EventTypeListRenderItem
+              item={item}
+              index={index}
+              selectEventType={() => selectEventType(item, index)}
+              selectedEventType={selectedEventType}
+              selectedTypeColor={colors.purple}
+              selectedTypeTitleColor={colors.white}
+            />
+          );
+        }}
+      />
+      <Input
+        containerStyle={styles.searchInputContainer}
+        style={styles.searchInput}
+        onChangeText={(e: string) => onChangeText(e)}
+        iconName="search-outline"
+        iconColor={colors.white}
+        iconSize={30}
+      />
     </View>
   );
 };

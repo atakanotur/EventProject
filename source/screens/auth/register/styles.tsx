@@ -21,10 +21,15 @@ export const styles = StyleSheet.create({
     marginBottom: 10
   },
   registerInput: {
-    borderBottomWidth: 2,
-    borderColor: colors.purple,
-    marginLeft: 5,
-    fontSize: 17
+    padding: 5,
+    margin: 10,
+    height: 50,
+    justifyContent: 'center',
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: colors.red,
+    fontSize: 17,
   },
   loginButton: {
     height: 50,

@@ -18,6 +18,7 @@ import {
   joinMyEventAsync,
 } from '../../store/myEvent';
 import colors from '../../theme/colors';
+import {getMyEventTypesAsync} from '../../store/myEventType';
 
 const MainScreen = () => {
   const loading = useAppSelector(state => state.myEvents.isLoading);
@@ -43,6 +44,7 @@ const MainScreen = () => {
 
   useEffect(() => {
     dispatch(getActiveMyEventsAsync(userId));
+    dispatch(getMyEventTypesAsync());
   }, []);
 
   useEffect(() => {
@@ -59,13 +61,13 @@ const MainScreen = () => {
     setSearchText(e);
   };
 
-  const selectEventType = (id: number) => {
-    if (id == selectedEventType) {
+  const selectEventType = (item: MyEventType, index: number) => {
+    if (index == selectedEventType) {
       setSelectedEventType(-1);
       setCopyOfEvents(events);
-    } else if (id !== -1) {
-      setSelectedEventType(id);
-      setCopyOfEvents(selectTypeOfEvent(events, id));
+    } else if (index !== -1) {
+      setSelectedEventType(index);
+      setCopyOfEvents(selectTypeOfEvent(events, item.id));
     } else setCopyOfEvents(events);
   };
 
@@ -79,11 +81,11 @@ const MainScreen = () => {
   };
 
   const joinEvent = async () => {
+    setSelectedEvent(-1);
     if (participant.myEventId !== 0)
       await dispatch(joinMyEventAsync(participant));
     await dispatch(getActiveMyEventsAsync(userId));
     await dispatch(getAttendedMyEventsByUserIdAsync(userId));
-    setSelectedEvent(-1);
   };
 
   const onRefresh = async () => {
@@ -111,7 +113,7 @@ const MainScreen = () => {
           <EventListHeaderComponent
             myEventTypes={myEventTypes}
             onChangeText={(e: string) => onChangeSearchText(e)}
-            selectEventType={(id: number) => selectEventType(id)}
+            selectEventType={(item, index) => selectEventType(item, index)}
             selectedEventType={selectedEventType}
           />
         }

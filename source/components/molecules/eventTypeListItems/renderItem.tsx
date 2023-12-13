@@ -14,7 +14,7 @@ interface EventTypeListRenderItemProps {
   item: MyEvent;
   index: number;
   selectedEventType: number;
-  selectEventType: (id: number) => void;
+  selectEventType: (item: MyEvent, index: number) => void;
   renderItemContainerStyle?: StyleProp<ViewStyle>;
   selectedTypeColor?: ColorValue;
   titleColor?: ColorValue;
@@ -42,7 +42,7 @@ const EventTypeListRenderItem = (props: EventTypeListRenderItemProps) => {
         },
         renderItemContainerStyle,
       ]}
-      onPress={() => selectEventType(item.id)}>
+      onPress={() => selectEventType(item, index)}>
       <Text
         text={item.name}
         style={[

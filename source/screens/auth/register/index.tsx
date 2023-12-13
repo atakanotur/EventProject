@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
-import {Button, Input, Text} from '../../../components';
+import {Button, Input, Loading, Text} from '../../../components';
 import {styles} from './styles';
 import colors from '../../../theme/colors';
 import {loginAsync, registerAsync} from '../../../store/auth';
@@ -13,24 +13,7 @@ const RegisterScreen = ({navigation}: any) => {
 
   const error = useAppSelector(state => state.auth.error);
 
-  useEffect(() => {
-    console.log('token', token);
-    console.log('error', error);
-    if (token !== null)
-      dispatch(
-        loginAsync({
-          email: registerState.email,
-          password: registerState.password,
-        }),
-      ).then(() => {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'Tab'}],
-          }),
-        );
-      });
-  }, [token, error]);
+  const loading = useAppSelector(state => state.auth.isLoading);
 
   const [registerState, setRegisterState] = useState({
     email: '',
@@ -38,6 +21,36 @@ const RegisterScreen = ({navigation}: any) => {
     firstName: '',
     lastName: '',
   });
+
+  const [opening, setOpening] = useState(false);
+
+  useEffect(() => {
+    console.log('token', token);
+    console.log('error', error);
+    registerState.email;
+    if (
+      token !== null &&
+      registerState.email !== '' &&
+      registerState.password !== ''
+    )
+      dispatch(
+        loginAsync({
+          email: registerState.email,
+          password: registerState.password,
+        }),
+      ).then((response: any) => {
+        if (response.payload?.status === 200) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: 'Tab'}],
+            }),
+          );
+        } else {
+          setOpening(false);
+        }
+      });
+  }, [token, error]);
 
   const dispatch = useAppDispatch();
 
@@ -77,8 +90,8 @@ const RegisterScreen = ({navigation}: any) => {
     navigation.navigate('Login');
   };
 
-  const register = () => {
-    dispatch(registerAsync(registerState));
+  const register = async() => {
+    await dispatch(registerAsync(registerState));
   };
 
   return (
@@ -146,6 +159,7 @@ const RegisterScreen = ({navigation}: any) => {
           textStyle={styles.loginButtonText}
         />
       </View>
+      <Loading visible={opening} />
     </SafeAreaView>
   );
 };

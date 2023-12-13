@@ -21,8 +21,20 @@ const RegisterScreen = ({navigation}: any) => {
   });
   const [rememberSelect, setRememberSelect] = useState(false);
 
+  const getUser = async () => {
+    const email: any = await AsyncStorage.getItem('eventProjectEmail');
+    const password: any = await AsyncStorage.getItem('eventProjectPassword');
+    console.log('email', email);
+    console.log('password', password);
+    if (email && password) await navigateToTabNavigator({email, password});
+    else setOpening(false);
+  };
+
   const navigateToTabNavigator = async ({email, password}: UserForLogin) => {
+    console.log('email', email);
+    console.log('password', password);
     await dispatch(loginAsync({email, password})).then((response: any) => {
+      console.log('response');
       if (response.payload?.status === 200) {
         navigation.dispatch(
           CommonActions.reset({
@@ -37,11 +49,6 @@ const RegisterScreen = ({navigation}: any) => {
   };
 
   useEffect(() => {
-    const getUser = async () => {
-      const email: any = await AsyncStorage.getItem('eventProjectEmail');
-      const password: any = await AsyncStorage.getItem('eventProjectPassword');
-      await navigateToTabNavigator({email, password});
-    };
     getUser();
   }, []);
 
@@ -110,12 +117,6 @@ const RegisterScreen = ({navigation}: any) => {
             text="Remember Me"
             style={styles.rememberMe}
             containerStyle={styles.rememberMeContainer}
-          />
-          <Button
-            text="Forgot Password?"
-            onPress={forgotPassword}
-            style={styles.forgotPasswordButton}
-            textStyle={styles.forgotPasswordButtonText}
           />
         </View>
       </View>

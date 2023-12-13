@@ -1,10 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  ImageBackground,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import {View, TouchableOpacity, RefreshControl, Image} from 'react-native';
 import {
   CategoryButtons,
   EventList,
@@ -29,7 +24,7 @@ import {MyEvent, Participant} from '../../types';
 import {getParticipantsAsync} from '../../store/participant';
 import {getAttendedMyEventsByUserIdAsync} from '../../store/myEvent';
 
-const source = require('../../theme/a1.png');
+const source = require('../../theme/atakan.png');
 
 const ProfileScreen = ({navigation}: any) => {
   const dispatch = useAppDispatch();
@@ -134,15 +129,22 @@ const ProfileScreen = ({navigation}: any) => {
             <Icon name="log-out-outline" size={35} color={colors.blue} />
           </TouchableOpacity>
         </View>
-        <ImageBackground
-          source={source}
-          style={styles.topImageBackground}
-          imageStyle={styles.topImageBackgroundImage}
-          resizeMode="contain">
-          <TouchableOpacity onPress={createEvent}>
-            <Icon name="add-circle-outline" color={colors.red} size={75} />
-          </TouchableOpacity>
-        </ImageBackground>
+        <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
+          <View style={{flex: 1}}>
+            <Image
+              source={source}
+              // source={{uri:'http://develeopar.com/atakan.png'}}
+              resizeMode="contain"
+              style={{width: '100%', height: '100%'}}
+            />
+          </View>
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <TouchableOpacity onPress={createEvent}>
+              <Icon name="add-circle-outline" color={colors.red} size={85} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
       <View style={styles.bottom}>
         <CategoryButtons

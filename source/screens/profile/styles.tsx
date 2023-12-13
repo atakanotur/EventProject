@@ -19,7 +19,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  topImageBackgroundImage: {},
+  topImageBackgroundImage: {
+  },
   addButton: {
     height: 70,
     width: 70,

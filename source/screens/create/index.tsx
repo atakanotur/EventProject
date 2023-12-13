@@ -4,7 +4,7 @@ import {Button, Input, Loading} from '../../components';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
-import {MyEvent} from '../../types';
+import {MyEvent, MyEventType} from '../../types';
 import {addMyEventAsync, getMyEventsByUserIdAsync} from '../../store/myEvent';
 import {EventTypeListRenderItem} from '../../components/molecules';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -28,25 +28,14 @@ const CreateScreen = ({navigation}: any) => {
 
   const [myEvent, setMyEvent] = useState<MyEvent>({
     id: 0,
-    myEventTypeId: 1,
+    myEventTypeId: 0,
     userId,
-    name: 'Event13',
-    address: 'Event13',
+    name: '',
+    address: '',
     date: new Date(),
-    participantLimit: 40,
+    participantLimit: 0,
     participantCount: 0,
   });
-
-  useEffect(() => {
-    setMyEvent({
-      ...myEvent,
-      myEventTypeId: selectedEventType,
-    });
-  }, [selectedEventType]);
-
-  useEffect(() => {
-    console.log('handleConfirmDateTime', myEvent.date);
-  }, [myEvent.date]);
 
   const handleConfirmDateTime = (e: any) => {
     var date: any = moment(e).format();
@@ -102,13 +91,18 @@ const CreateScreen = ({navigation}: any) => {
     });
   };
 
-  const selectEventType = (id: number) => {
-    if (id == selectedEventType) {
+  const selectEventType = (item: MyEventType, index: number) => {
+    if (item.id == selectedEventType) {
       setSelectedEventType(-1);
     } else {
-      setSelectedEventType(id);
+      setSelectedEventType(index);
+      setMyEvent({
+        ...myEvent,
+        myEventTypeId: item.id,
+      });
     }
   };
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <View>
@@ -122,7 +116,9 @@ const CreateScreen = ({navigation}: any) => {
               <EventTypeListRenderItem
                 item={item}
                 index={index}
-                selectEventType={selectEventType}
+                selectEventType={(item: MyEventType, index: number) =>
+                  selectEventType(item, index)
+                }
                 selectedEventType={selectedEventType}
                 renderItemContainerStyle={styles.eventTypeListContainer}
                 selectedTypeColor={colors.red}
