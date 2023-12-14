@@ -24,15 +24,11 @@ const RegisterScreen = ({navigation}: any) => {
   const getUser = async () => {
     const email: any = await AsyncStorage.getItem('eventProjectEmail');
     const password: any = await AsyncStorage.getItem('eventProjectPassword');
-    console.log('email', email);
-    console.log('password', password);
     if (email && password) await navigateToTabNavigator({email, password});
     else setOpening(false);
   };
 
   const navigateToTabNavigator = async ({email, password}: UserForLogin) => {
-    console.log('email', email);
-    console.log('password', password);
     await dispatch(loginAsync({email, password})).then((response: any) => {
       console.log('response');
       if (response.payload?.status === 200) {

@@ -4,7 +4,7 @@ import {Button, Input, Loading} from '../../components';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
-import {MyEvent} from '../../types';
+import {MyEvent, MyEventType} from '../../types';
 import {
   getMyEventsByUserIdAsync,
   updateMyEventAsync,
@@ -38,15 +38,8 @@ const UpdateScreen = ({navigation}: any) => {
   useEffect(() => {
     console.log('myEvent', myEvent);
     console.log('updatedMyEvent', updatedMyEvent);
-    setSelectedEventType(myEvent.myEventTypeId);
+    setSelectedEventType(myEvent.myEventTypeId-1);
   }, []);
-
-  useEffect(() => {
-    setUpdatedMyEvent({
-      ...updatedMyEvent,
-      myEventTypeId: selectedEventType,
-    });
-  }, [selectedEventType]);
 
   useEffect(() => {
     console.log('handleConfirmDateTime', myEvent.date);
@@ -106,11 +99,15 @@ const UpdateScreen = ({navigation}: any) => {
     });
   };
 
-  const selectEventType = (id: number) => {
-    if (id == selectedEventType) {
+  const selectEventType = (item: MyEventType, index: number) => {
+    if (index == selectedEventType) {
       setSelectedEventType(-1);
     } else {
-      setSelectedEventType(id);
+      setSelectedEventType(index);
+      setUpdatedMyEvent({
+        ...updatedMyEvent,
+        myEventTypeId: item.id
+      });
     }
   };
   return (
@@ -126,7 +123,9 @@ const UpdateScreen = ({navigation}: any) => {
               <EventTypeListRenderItem
                 item={item}
                 index={index}
-                selectEventType={selectEventType}
+                selectEventType={(item: MyEventType, index: number) =>
+                  selectEventType(item, index)
+                }
                 selectedEventType={selectedEventType}
                 renderItemContainerStyle={styles.eventTypeListContainer}
                 selectedTypeColor={colors.red}

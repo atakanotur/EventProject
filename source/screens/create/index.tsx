@@ -92,7 +92,7 @@ const CreateScreen = ({navigation}: any) => {
   };
 
   const selectEventType = (item: MyEventType, index: number) => {
-    if (item.id == selectedEventType) {
+    if (index == selectedEventType) {
       setSelectedEventType(-1);
     } else {
       setSelectedEventType(index);

@@ -90,7 +90,7 @@ const RegisterScreen = ({navigation}: any) => {
     navigation.navigate('Login');
   };
 
-  const register = async() => {
+  const register = async () => {
     await dispatch(registerAsync(registerState));
   };
 
@@ -103,7 +103,7 @@ const RegisterScreen = ({navigation}: any) => {
         <Input
           containerStyle={styles.registerInputContainer}
           placeholder="First Name"
-          onChangeText={e => onChangeFirstName(e)}
+          onChangeText={(e: string) => onChangeFirstName(e)}
           style={styles.registerInput}
           selectionColor={colors.white}
           placeholderTextColor={colors.blue}
@@ -114,7 +114,7 @@ const RegisterScreen = ({navigation}: any) => {
         <Input
           containerStyle={styles.registerInputContainer}
           placeholder="Last Name"
-          onChangeText={e => onChangeLastName(e)}
+          onChangeText={(e: string) => onChangeLastName(e)}
           style={styles.registerInput}
           selectionColor={colors.white}
           placeholderTextColor={colors.blue}
@@ -125,7 +125,7 @@ const RegisterScreen = ({navigation}: any) => {
         <Input
           containerStyle={styles.registerInputContainer}
           placeholder="Email"
-          onChangeText={e => onChangeEmail(e)}
+          onChangeText={(e: string) => onChangeEmail(e)}
           style={styles.registerInput}
           selectionColor={colors.green}
           placeholderTextColor={colors.blue}
@@ -136,7 +136,7 @@ const RegisterScreen = ({navigation}: any) => {
         <Input
           containerStyle={styles.registerInputContainer}
           placeholder="Password"
-          onChangeText={e => onChangePassword(e)}
+          onChangeText={(e: string) => onChangePassword(e)}
           style={styles.registerInput}
           selectionColor={colors.white}
           placeholderTextColor={colors.blue}
