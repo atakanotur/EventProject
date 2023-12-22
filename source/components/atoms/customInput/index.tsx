@@ -24,6 +24,7 @@ interface OwnProps {
   iconSize?: any;
   keyboardType?: KeyboardType;
   defaultValue?: any;
+  secureTextEntry?: boolean;
 }
 
 export type CustomInputProps = OwnProps & TextInputProps;
@@ -41,6 +42,7 @@ const CustomInput = (props: CustomInputProps) => {
     iconSize,
     keyboardType,
     defaultValue,
+    secureTextEntry,
   } = props;
   return (
     <View style={[styles.containerStyle, containerStyle]}>
@@ -53,6 +55,7 @@ const CustomInput = (props: CustomInputProps) => {
         placeholderTextColor={placeholderTextColor}
         keyboardType={keyboardType}
         defaultValue={defaultValue}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );

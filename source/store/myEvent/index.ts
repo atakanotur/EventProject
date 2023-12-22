@@ -100,6 +100,9 @@ interface InitialState extends InitialStateBase {
   attendedMyEvents: MyEvent[];
   myEventsByUserId: MyEvent[];
   myEvent: MyEvent;
+  myEventCreated: boolean;
+  myEventDeleted: boolean;
+  myEventUpdated: boolean;
 }
 
 const initialState: InitialState = {
@@ -108,6 +111,9 @@ const initialState: InitialState = {
   attendedMyEvents: [],
   myEventsByUserId: [],
   myEvent: {} as MyEvent,
+  myEventCreated: false,
+  myEventDeleted: false,
+  myEventUpdated: false,
   isLoading: false,
   error: null,
 };
@@ -115,7 +121,17 @@ const initialState: InitialState = {
 export const myEventsSlice = createSlice({
   name: 'myEvents',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setMyEventCreated: (state, action) => {
+      state.myEventCreated = action.payload;
+    },
+    setMyEventDeleted: (state, action) => {
+      state.myEventDeleted = action.payload;
+    },
+    setMyEventUpdated: (state, action) => {
+      state.myEventUpdated = action.payload;
+    },
+  },
   extraReducers(builder) {
     //getMyEventsAsync
     builder.addCase(getMyEventsAsync.pending, state => {
@@ -188,10 +204,12 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(addMyEventAsync.fulfilled, state => {
+      state.myEventCreated = true;
       state.isLoading = false;
     });
     builder.addCase(addMyEventAsync.rejected, (state, action) => {
       state.error = action.error;
+      state.myEventCreated = false;
       state.isLoading = false;
     });
     //deleteMyEvent
@@ -199,10 +217,12 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(deleteMyEventAsync.fulfilled, state => {
+      state.myEventDeleted = true;
       state.isLoading = false;
     });
     builder.addCase(deleteMyEventAsync.rejected, (state, action) => {
       state.error = action.error;
+      state.myEventDeleted = false;
       state.isLoading = false;
     });
     //updateMyEvent
@@ -210,10 +230,12 @@ export const myEventsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(updateMyEventAsync.fulfilled, state => {
+      state.myEventUpdated = true;
       state.isLoading = false;
     });
     builder.addCase(updateMyEventAsync.rejected, (state, action) => {
       state.error = action.error;
+      state.myEventUpdated = false;
       state.isLoading = false;
     });
     //joinMyEventAsync
@@ -240,5 +262,8 @@ export const myEventsSlice = createSlice({
     });
   },
 });
+
+export const {setMyEventCreated, setMyEventDeleted, setMyEventUpdated} =
+  myEventsSlice.actions;
 
 export default myEventsSlice.reducer;

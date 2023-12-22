@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {View} from 'react-native';
-import {Button, Input, Loading} from '../../components';
+import {Button, Input, Loading, ToastMessage} from '../../components';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
@@ -37,6 +37,8 @@ const CreateScreen = ({navigation}: any) => {
     participantCount: 0,
   });
 
+  const createEventErrorToastMessage = useRef<{show: () => void}>(null);
+
   const handleConfirmDateTime = (e: any) => {
     var date: any = moment(e).format();
     setMyEvent({
@@ -48,14 +50,17 @@ const CreateScreen = ({navigation}: any) => {
 
   const createEvent = async () => {
     console.log('myEvent', myEvent);
-    await dispatch(addMyEventAsync(myEvent));
-    await dispatch(getMyEventsByUserIdAsync(userId));
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: 'Tab'}],
-      }),
-    );
+    await dispatch(addMyEventAsync(myEvent)).then(async (response: any) => {
+      if (response.payload?.status === 200) {
+        await dispatch(getMyEventsByUserIdAsync(userId));
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Tab'}],
+          }),
+        );
+      } else createEventErrorToastMessage.current?.show();
+    });
   };
 
   const cancelEvent = () => {
@@ -127,6 +132,7 @@ const CreateScreen = ({navigation}: any) => {
             );
           }}
         />
+
         <Input
           containerStyle={styles.modalItemContainer}
           onChangeText={(e: string) => onChangeEventNameText(e)}
@@ -168,6 +174,12 @@ const CreateScreen = ({navigation}: any) => {
           textStyle={styles.cancelButtonText}
         />
       </View>
+      <ToastMessage
+        duration={3000}
+        message="Etkinlik oluşturulamadı!"
+        ref={createEventErrorToastMessage}
+        type="error"
+      />
       <DateTimePickerModal
         testID="test"
         isVisible={eventDateVisible}

@@ -6,6 +6,7 @@ import {
   EventListEmptyComponent,
   EventListRenderItem,
   Loading,
+  ToastMessage,
 } from '../../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
@@ -51,6 +52,13 @@ const ProfileScreen = ({navigation}: any) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
+  const eventUpdatedSuccessToastMessage = useRef<{show: () => void}>(null);
+  const eventDeletedSuccessToastMessage = useRef<{show: () => void}>(null);
+  const eventLeaveSuccessToastMessage = useRef<{show: () => void}>(null);
+  const eventUpdatedErrorToastMessage = useRef<{show: () => void}>(null);
+  const eventDeletedErrorToastMessage = useRef<{show: () => void}>(null);
+  const eventLeaveErrorToastMessage = useRef<{show: () => void}>(null);
+
   const logout = async () => {
     await AsyncStorage.setItem('eventProjectEmail', '');
     await AsyncStorage.setItem('eventProjectPassword', '');
@@ -95,21 +103,38 @@ const ProfileScreen = ({navigation}: any) => {
 
   const leaveEvent = async () => {
     if (participant.myEventId !== 0)
-      await dispatch(leaveMyEventAsync(participant));
-    await dispatch(getAttendedMyEventsByUserIdAsync(userId));
-    await dispatch(getActiveMyEventsAsync(userId));
-    setSelectedEvent(-1);
+      await dispatch(leaveMyEventAsync(participant)).then(
+        async (response: any) => {
+          if (response.payload?.status === 200) {
+            await dispatch(getAttendedMyEventsByUserIdAsync(userId));
+            await dispatch(getActiveMyEventsAsync(userId));
+            eventLeaveSuccessToastMessage.current?.show();
+            setSelectedEvent(-1);
+          } else {
+            eventLeaveErrorToastMessage.current?.show();
+          }
+        },
+      );
   };
 
   const deleteEvent = async ({item, index}: any) => {
-    await dispatch(deleteMyEventAsync(item));
-    await dispatch(getMyEventsByUserIdAsync(userId));
-    setSelectedEvent(-1);
+    await dispatch(deleteMyEventAsync(item)).then(async (response: any) => {
+      if (response.payload?.status === 200) {
+        await dispatch(getMyEventsByUserIdAsync(userId));
+        setSelectedEvent(-1);
+        eventDeletedSuccessToastMessage.current?.show();
+      } else {
+        eventDeletedErrorToastMessage.current?.show();
+      }
+    });
   };
 
   const updateEvent = async ({item, index}: any) => {
-    await dispatch(getMyEventByIdAsync(item.id));
-    navigation.navigate('Update');
+    await dispatch(getMyEventByIdAsync(item.id)).then((response: any) => {
+      if (response.payload?.status === 200) {
+        navigation.navigate('Update');
+      }
+    });
   };
 
   const onRefreshCreatedList = () => {
@@ -201,6 +226,42 @@ const ProfileScreen = ({navigation}: any) => {
           />
         )}
         <Loading visible={loading} />
+        <ToastMessage
+          duration={2000}
+          message="Etkinlik güncellendi!"
+          ref={eventUpdatedSuccessToastMessage}
+          type="success"
+        />
+        <ToastMessage
+          duration={2000}
+          message="Etkinlik silindi!"
+          ref={eventDeletedSuccessToastMessage}
+          type="success"
+        />
+        <ToastMessage
+          duration={2000}
+          message="Etkinlikten çıkıldı!"
+          ref={eventLeaveSuccessToastMessage}
+          type="success"
+        />
+        <ToastMessage
+          duration={2000}
+          message="Etkinlik güncellenemedi!"
+          ref={eventUpdatedErrorToastMessage}
+          type="error"
+        />
+        <ToastMessage
+          duration={2000}
+          message="Etkinlik silinemedi!"
+          ref={eventDeletedErrorToastMessage}
+          type="error"
+        />
+        <ToastMessage
+          duration={2000}
+          message="Etkinlikten çıkılamadı!"
+          ref={eventLeaveErrorToastMessage}
+          type="error"
+        />
       </View>
     </SafeAreaView>
   );

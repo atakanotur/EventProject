@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
-import {Button, Input, Loading, Text} from '../../../components';
+import {Button, Input, Loading, Text, ToastMessage} from '../../../components';
 import {styles} from './styles';
 import colors from '../../../theme/colors';
 import {loginAsync, registerAsync} from '../../../store/auth';
@@ -24,32 +24,11 @@ const RegisterScreen = ({navigation}: any) => {
 
   const [opening, setOpening] = useState(false);
 
+  const registerErrorToastMessage = useRef<{show: () => void}>(null);
+
   useEffect(() => {
     console.log('token', token);
     console.log('error', error);
-    registerState.email;
-    if (
-      token !== null &&
-      registerState.email !== '' &&
-      registerState.password !== ''
-    )
-      dispatch(
-        loginAsync({
-          email: registerState.email,
-          password: registerState.password,
-        }),
-      ).then((response: any) => {
-        if (response.payload?.status === 200) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'Tab'}],
-            }),
-          );
-        } else {
-          setOpening(false);
-        }
-      });
   }, [token, error]);
 
   const dispatch = useAppDispatch();
@@ -86,12 +65,40 @@ const RegisterScreen = ({navigation}: any) => {
     console.log('password', registerState.password);
   };
 
-  const login = () => {
-    navigation.navigate('Login');
+  const login = async () => {
+    await dispatch(
+      loginAsync({
+        email: registerState.email,
+        password: registerState.password,
+      }),
+    ).then((response: any) => {
+      console.log('response', response);
+      if (response.payload?.status === 200) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Tab'}],
+          }),
+        );
+      } else {
+        setOpening(false);
+      }
+    });
   };
 
   const register = async () => {
-    await dispatch(registerAsync(registerState));
+    await dispatch(registerAsync(registerState)).then(async (response: any) => {
+      console.log('response', response);
+      if (response.payload?.status === 200) {
+        await login();
+      } else {
+        registerErrorToastMessage.current?.show();
+      }
+    });
+  };
+
+  const goLogin = () => {
+    navigation.navigate('Login');
   };
 
   return (
@@ -153,12 +160,18 @@ const RegisterScreen = ({navigation}: any) => {
           textStyle={styles.registerButtonText}
         />
         <Button
-          onPress={() => login()}
+          onPress={() => goLogin()}
           text="Login"
           style={styles.loginButton}
           textStyle={styles.loginButtonText}
         />
       </View>
+      <ToastMessage
+        duration={3000}
+        message="Kayıt başarısız!"
+        type="error"
+        ref={registerErrorToastMessage}
+      />
       <Loading visible={opening} />
     </SafeAreaView>
   );

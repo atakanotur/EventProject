@@ -1,4 +1,4 @@
-import {Text, Button, Input} from './atoms';
+import {Text, Button, Input, ToastMessage} from './atoms';
 import {
   EventListRenderItem,
   EventListEmptyComponent,
@@ -21,4 +21,5 @@ export {
   EventList,
   CategoryButtons,
   EventTypeListRenderItem,
+  ToastMessage,
 };

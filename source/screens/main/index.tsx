@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {RefreshControl} from 'react-native';
 import {
   EventList,
@@ -6,6 +6,7 @@ import {
   EventListEmptyComponent,
   EventListHeaderComponent,
   Loading,
+  ToastMessage,
 } from '../../components';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -25,6 +26,8 @@ const MainScreen = () => {
   const events: MyEvent[] = useAppSelector(
     state => state.myEvents.activeMyEvents,
   );
+  const eventCreated = useAppSelector(state => state.myEvents.myEventCreated);
+  const eventUpdated = useAppSelector(state => state.myEvents.myEventUpdated);
   const userId: number = useAppSelector(state => state.auth.userId);
   const myEventTypes: MyEventType[] = useAppSelector(
     state => state.myEventTypes.myEventTypes,
@@ -34,6 +37,10 @@ const MainScreen = () => {
     myEventId: 0,
     userId,
   });
+  const joinEventSuccessToastRef = useRef<{show: () => void}>(null);
+  const joinEventErrorToastRef = useRef<{show: () => void}>(null);
+  const eventCreatedSuccessToastRef = useRef<{show: () => void}>(null);
+  const eventUpdatedSuccessToastRef = useRef<{show: () => void}>(null);
   const [searchText, setSearchText] = useState('');
   const [copyOfEvents, setCopyOfEvents] = useState(events);
   const [selectedEvent, setSelectedEvent] = useState(-1);
@@ -56,6 +63,22 @@ const MainScreen = () => {
     if (searchText !== '') setCopyOfEvents(search(events, searchText));
     else setCopyOfEvents(events);
   }, [searchText]);
+
+  useEffect(() => {
+    console.log('eventCreated', eventCreated);
+    if (eventCreated) {
+      console.log('created');
+      eventCreatedSuccessToastRef.current?.show();
+    }
+  }, [eventCreated]);
+
+  useEffect(() => {
+    console.log('eventUpdated', eventUpdated);
+    if (eventUpdated) {
+      console.log('updated');
+      eventUpdatedSuccessToastRef.current?.show();
+    }
+  }, [eventUpdated]);
 
   const onChangeSearchText = (e: string) => {
     setSearchText(e);
@@ -83,7 +106,12 @@ const MainScreen = () => {
   const joinEvent = async () => {
     setSelectedEvent(-1);
     if (participant.myEventId !== 0)
-      await dispatch(joinMyEventAsync(participant));
+      await dispatch(joinMyEventAsync(participant)).then((response: any) => {
+        console.log('response', response);
+        if (response.payload?.status === 200)
+          joinEventSuccessToastRef.current?.show();
+        else joinEventErrorToastRef.current?.show();
+      });
     await dispatch(getActiveMyEventsAsync(userId));
     await dispatch(getAttendedMyEventsByUserIdAsync(userId));
   };
@@ -126,6 +154,30 @@ const MainScreen = () => {
         }
       />
       <Loading visible={loading} />
+      <ToastMessage
+        duration={3000}
+        message="Etkinliğe katılındı!"
+        type="success"
+        ref={joinEventSuccessToastRef}
+      />
+      <ToastMessage
+        duration={3000}
+        message="Etkinliğe katılındı!"
+        type="error"
+        ref={joinEventErrorToastRef}
+      />
+      <ToastMessage
+        duration={3000}
+        message="Etkinlik Oluşturuldu!"
+        type="success"
+        ref={eventCreatedSuccessToastRef}
+      />
+      <ToastMessage
+        duration={3000}
+        message="Etkinlik güncellendi!"
+        type="success"
+        ref={eventUpdatedSuccessToastRef}
+      />
     </SafeAreaView>
   );
 };

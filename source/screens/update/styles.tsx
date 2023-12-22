@@ -28,13 +28,13 @@ export const styles = StyleSheet.create({
   bottom:{
 
   },
-  createButton: {
+  updateButton: {
     height: 50,
     margin: 10,
     backgroundColor: colors.red,
     borderRadius: 10,
   },
-  createButtonText: {
+  updateButtonText: {
     color: colors.white,
   },
   cancelButton: {

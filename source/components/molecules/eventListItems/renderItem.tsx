@@ -54,14 +54,14 @@ export const EventListRenderItem = (props: EventListRenderItemProps) => {
   }, [selectedEvent]);
   const EventButton = ({buttonText, onPress, style}: EventButtonProps) => (
     <Animated.View
-      style={[styles.eventListBottom, {flex: selectedEvent === -1 ? 0 : flex}]}>
+      style={[styles.eventListBottom, {flex: selectedEvent == -1 ? 0 : flex}]}>
       <Button
         text={buttonText}
         onPress={onPress}
         style={[
           styles.joinEventButton,
           {
-            height: selectedEvent === id ? 30 : 0,
+            height: selectedEvent == id ? 30 : 0,
           },
           style,
         ]}

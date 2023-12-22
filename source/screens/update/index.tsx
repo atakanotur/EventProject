@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View} from 'react-native';
-import {Button, Input, Loading} from '../../components';
+import {Button, Input, Loading, ToastMessage} from '../../components';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
@@ -35,10 +35,12 @@ const UpdateScreen = ({navigation}: any) => {
     ...myEvent,
   });
 
+  const eventUpdatedErrorToastMessage = useRef<{show: () => void}>(null);
+
   useEffect(() => {
     console.log('myEvent', myEvent);
     console.log('updatedMyEvent', updatedMyEvent);
-    setSelectedEventType(myEvent.myEventTypeId-1);
+    setSelectedEventType(myEvent.myEventTypeId - 1);
   }, []);
 
   useEffect(() => {
@@ -56,13 +58,18 @@ const UpdateScreen = ({navigation}: any) => {
 
   const updateEvent = async () => {
     console.log('myEvent', myEvent);
-    await dispatch(updateMyEventAsync(updatedMyEvent));
-    await dispatch(getMyEventsByUserIdAsync(userId));
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: 'Tab'}],
-      }),
+    await dispatch(updateMyEventAsync(updatedMyEvent)).then(
+      async (response: any) => {
+        if (response.payload?.status === 200) {
+          await dispatch(getMyEventsByUserIdAsync(userId));
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: 'Tab'}],
+            }),
+          );
+        } else eventUpdatedErrorToastMessage.current?.show();
+      },
     );
   };
 
@@ -106,7 +113,7 @@ const UpdateScreen = ({navigation}: any) => {
       setSelectedEventType(index);
       setUpdatedMyEvent({
         ...updatedMyEvent,
-        myEventTypeId: item.id
+        myEventTypeId: item.id,
       });
     }
   };
@@ -167,9 +174,9 @@ const UpdateScreen = ({navigation}: any) => {
       <View style={styles.bottom}>
         <Button
           onPress={updateEvent}
-          style={styles.createButton}
+          style={styles.updateButton}
           text="Update Your Super Event"
-          textStyle={styles.createButtonText}
+          textStyle={styles.updateButtonText}
         />
         <Button
           onPress={cancelEvent}
@@ -186,6 +193,12 @@ const UpdateScreen = ({navigation}: any) => {
         onCancel={changeEventDateVisible}
       />
       <Loading visible={loading} />
+      <ToastMessage
+        duration={2000}
+        message="Etkinlik güncellenemedi!"
+        ref={eventUpdatedErrorToastMessage}
+        type="error"
+      />
     </SafeAreaView>
   );
 };

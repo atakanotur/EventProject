@@ -1,9 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
-import {Button, Input, Text, CheckBox, Loading} from '../../../components';
+import {
+  Button,
+  Input,
+  Text,
+  CheckBox,
+  ToastMessage,
+  Loading,
+} from '../../../components';
 import {styles} from './styles';
 import colors from '../../../theme/colors';
 import {loginAsync} from '../../../store/auth';
@@ -20,6 +27,8 @@ const RegisterScreen = ({navigation}: any) => {
     password: '',
   });
   const [rememberSelect, setRememberSelect] = useState(false);
+
+  const loginErrorToastRef = useRef<{show: () => void}>(null);
 
   const getUser = async () => {
     const email: any = await AsyncStorage.getItem('eventProjectEmail');
@@ -40,6 +49,9 @@ const RegisterScreen = ({navigation}: any) => {
         );
       } else {
         setOpening(false);
+        if (loginErrorToastRef.current) {
+          loginErrorToastRef.current.show();
+        }
       }
     });
   };
@@ -74,7 +86,6 @@ const RegisterScreen = ({navigation}: any) => {
   const register = () => {
     navigation.navigate('Register');
   };
-  const forgotPassword = () => {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,6 +114,7 @@ const RegisterScreen = ({navigation}: any) => {
           iconName="key-outline"
           iconColor={colors.red}
           iconSize={30}
+          secureTextEntry={true}
         />
         <View style={styles.rememberMeAndForgotPassword}>
           <CheckBox
@@ -132,6 +144,12 @@ const RegisterScreen = ({navigation}: any) => {
       </View>
       <Loading visible={loading} />
       <Loading visible={opening} />
+      <ToastMessage
+        message="Giriş başarısız"
+        type="error"
+        duration={3000}
+        ref={loginErrorToastRef}
+      />
     </SafeAreaView>
   );
 };
