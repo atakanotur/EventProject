@@ -6,8 +6,15 @@ import {
   CheckBox,
   CategoryButtons,
   EventTypeListRenderItem,
+  UserListRenderItem,
 } from './molecules';
-import {Loading, EventList} from './organisms';
+import {
+  Loading,
+  EventList,
+  EventTypeList,
+  UserList,
+  DeleteConfirmationModal,
+} from './organisms';
 
 export {
   Text,
@@ -20,6 +27,10 @@ export {
   EventListHeaderComponent,
   EventList,
   CategoryButtons,
+  EventTypeList,
   EventTypeListRenderItem,
   ToastMessage,
+  UserList,
+  UserListRenderItem,
+  DeleteConfirmationModal,
 };

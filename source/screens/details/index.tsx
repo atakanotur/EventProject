@@ -4,32 +4,23 @@ import {Button, Input, Loading, Text, ToastMessage} from '../../components';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
-import {
-  MyEvent,
-  MyEventType,
-  Participant,
-  UserProfileDetail,
-} from '../../types';
+import {MyEvent, MyEventType} from '../../types';
 import {
   getMyEventsByUserIdAsync,
-  leaveMyEventAsync,
   updateMyEventAsync,
 } from '../../store/myEvent';
-import {EventTypeListRenderItem, UserListRenderItem} from '../../components';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {
-  DeleteConfirmationModal,
-  EventTypeList,
-  UserList,
-} from '../../components/organisms';
-import colors from '../../theme/colors';
-import {CommonActions} from '@react-navigation/native';
-import moment from 'moment';
 import {getUsersByMyEventIdAsync} from '../../store/user';
-import {deleteParticipantAsync} from '../../store/participant';
-import CustomModal from '../../components/molecules/customModal';
+import {
+  EventTypeList,
+  EventTypeListRenderItem,
+  UserList,
+  UserListRenderItem,
+} from '../../components';
+import colors from '../../theme/colors';
+import moment from 'moment';
 
-const UpdateScreen = ({navigation}: any) => {
+const DetailsScreen = ({navigation}: any) => {
   const dispatch = useAppDispatch();
 
   const loading = useAppSelector(state => state.myEvents.isLoading);
@@ -44,6 +35,8 @@ const UpdateScreen = ({navigation}: any) => {
     state => state.users.userProfileDetails,
   );
 
+  const userLoading = useAppSelector(state => state.users.isLoading);
+
   const [selectedEventType, setSelectedEventType] = useState(-1);
 
   const [eventDateVisible, setEventDateVisible] = useState(false);
@@ -53,29 +46,16 @@ const UpdateScreen = ({navigation}: any) => {
   });
 
   const eventUpdatedErrorToastMessage = useRef<{show: () => void}>(null);
-  const participantKickedSuccessToastMessage = useRef<{show: () => void}>(null);
-
-  const [selectedUser, setSelectedUser] = useState<UserProfileDetail>({
-    userId: 0,
-    email: '',
-    firstName: '',
-    lastName: '',
-  });
-
-  const [selectedParticipant, setSelectedParticipant] = useState<Participant>({
-    id: 0,
-    userId: 0,
-    myEventId: 0,
-  });
-
-  const [deleteConfirmationModalVisible, setDeleteConfirmationModalVisible] =
-    useState(false);
 
   useEffect(() => {
     console.log('myEvent', myEvent);
+    console.log('updatedMyEvent', updatedMyEvent);
     setSelectedEventType(myEvent.myEventTypeId - 1);
-    dispatch(getUsersByMyEventIdAsync(myEvent.id));
   }, []);
+
+  useEffect(() => {
+    console.log('handleConfirmDateTime', myEvent.date);
+  }, [myEvent.date]);
 
   const handleConfirmDateTime = (e: any) => {
     var date: any = moment(e).format();
@@ -86,29 +66,13 @@ const UpdateScreen = ({navigation}: any) => {
     setEventDateVisible(false);
   };
 
-  const updateEvent = async () => {
-    await dispatch(updateMyEventAsync(updatedMyEvent)).then(
-      async (response: any) => {
-        if (response.payload?.status === 200) {
-          await dispatch(getMyEventsByUserIdAsync(userId));
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'Tab'}],
-            }),
-          );
-        } else eventUpdatedErrorToastMessage.current?.show();
-      },
-    );
-  };
-
   const cancelEvent = () => {
     navigation.goBack();
   };
 
   const changeEventDateVisible = () => {
-    console.log('changeEventDateVisible', eventDateVisible);
     setEventDateVisible(!eventDateVisible);
+    console.log('changeEventDateVisible', eventDateVisible);
   };
 
   const onChangeEventNameText = (e: string) => {
@@ -146,39 +110,6 @@ const UpdateScreen = ({navigation}: any) => {
       });
     }
   };
-
-  const selectUser = async (item: UserProfileDetail, index: number) => {
-    setSelectedUser({
-      userId: item.userId,
-      email: item.email,
-      firstName: item.firstName,
-      lastName: item.lastName,
-    });
-    setSelectedParticipant({
-      id: 0,
-      userId: item.userId,
-      myEventId: myEvent.id,
-    });
-    setDeleteConfirmationModalVisible(true);
-  };
-
-  const deleteParticipant = async () => {
-    await dispatch(leaveMyEventAsync(selectedParticipant)).then(
-      async (response: any) => {
-        if (response.payload?.status === 200) {
-          await dispatch(getUsersByMyEventIdAsync(myEvent.id));
-          participantKickedSuccessToastMessage.current?.show();
-          setDeleteConfirmationModalVisible(true);
-        }
-      },
-    );
-    setDeleteConfirmationModalVisible(false);
-  };
-
-  const cancelDeleteParticipant = () => {
-    setDeleteConfirmationModalVisible(false);
-  };
-
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <View>
@@ -199,6 +130,7 @@ const UpdateScreen = ({navigation}: any) => {
                 renderItemContainerStyle={styles.eventTypeListContainer}
                 selectedTypeColor={colors.red}
                 selectedTypeTitleColor={colors.white}
+                disabled={true}
               />
             );
           }}
@@ -209,11 +141,13 @@ const UpdateScreen = ({navigation}: any) => {
           placeholder="Event Name"
           style={styles.modalInput}
           defaultValue={myEvent.name}
+          editable={false}
         />
         <Button
           onPress={changeEventDateVisible}
           style={styles.modalItemContainer}
           text={moment(updatedMyEvent.date).format('MMMM Do YYYY, h:mm:ss a')}
+          disabled={true}
         />
         <Input
           containerStyle={styles.modalItemContainer}
@@ -221,6 +155,7 @@ const UpdateScreen = ({navigation}: any) => {
           placeholder="Event Address"
           style={styles.modalInput}
           defaultValue={myEvent.address}
+          editable={false}
         />
         <Input
           keyboardType="number-pad"
@@ -231,6 +166,7 @@ const UpdateScreen = ({navigation}: any) => {
           placeholder="Participant Limit"
           style={styles.modalInput}
           defaultValue={myEvent.participantLimit.toString()}
+          editable={false}
         />
       </View>
       <UserList
@@ -238,15 +174,7 @@ const UpdateScreen = ({navigation}: any) => {
         extraData={userProfileDetails}
         style={styles.userList}
         renderItem={({item, index}: any) => {
-          return (
-            <UserListRenderItem
-              item={item}
-              index={index}
-              selectUser={(item: UserProfileDetail, index: number) =>
-                selectUser(item, index)
-              }
-            />
-          );
+          return <UserListRenderItem item={item} disabledOnPress={true} />;
         }}
         ListHeaderComponent={() => {
           return (
@@ -257,12 +185,6 @@ const UpdateScreen = ({navigation}: any) => {
         }}
       />
       <View style={styles.bottom}>
-        <Button
-          onPress={updateEvent}
-          style={styles.updateButton}
-          text="Update Your Super Event"
-          textStyle={styles.updateButtonText}
-        />
         <Button
           onPress={cancelEvent}
           style={styles.cancelButton}
@@ -277,28 +199,16 @@ const UpdateScreen = ({navigation}: any) => {
         onConfirm={handleConfirmDateTime}
         onCancel={changeEventDateVisible}
       />
-      <DeleteConfirmationModal
-        visible={deleteConfirmationModalVisible}
-        header="Delete Participant"
-        message="Are you sure you want to delete this participant?"
-        onDelete={deleteParticipant}
-        onCancel={cancelDeleteParticipant}
-      />
       <Loading visible={loading} />
+      <Loading visible={userLoading} />
       <ToastMessage
         duration={2000}
         message="Etkinlik güncellenemedi!"
         ref={eventUpdatedErrorToastMessage}
         type="error"
       />
-      <ToastMessage
-        duration={2000}
-        message="Katılımcı etkinlikten çıkarıldı!"
-        ref={participantKickedSuccessToastMessage}
-        type="success"
-      />
     </SafeAreaView>
   );
 };
 
-export default UpdateScreen;
+export default DetailsScreen;

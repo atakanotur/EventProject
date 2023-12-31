@@ -19,6 +19,7 @@ interface EventTypeListRenderItemProps {
   selectedTypeColor?: ColorValue;
   titleColor?: ColorValue;
   selectedTypeTitleColor?: ColorValue;
+  disabled?: boolean;
 }
 
 const EventTypeListRenderItem = (props: EventTypeListRenderItemProps) => {
@@ -31,6 +32,7 @@ const EventTypeListRenderItem = (props: EventTypeListRenderItemProps) => {
     selectedTypeColor,
     selectedTypeTitleColor,
     titleColor,
+    disabled,
   } = props;
   return (
     <TouchableOpacity
@@ -42,7 +44,8 @@ const EventTypeListRenderItem = (props: EventTypeListRenderItemProps) => {
         },
         renderItemContainerStyle,
       ]}
-      onPress={() => selectEventType(item, index)}>
+      onPress={() => selectEventType(item, index)}
+      disabled={disabled}>
       <Text
         text={item.name}
         style={[

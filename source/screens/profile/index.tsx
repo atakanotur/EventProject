@@ -24,6 +24,7 @@ import {
 import {MyEvent, Participant} from '../../types';
 import {getParticipantsAsync} from '../../store/participant';
 import {getAttendedMyEventsByUserIdAsync} from '../../store/myEvent';
+import {getUsersByMyEventIdAsync} from '../../store/user';
 
 const source = require('../../theme/atakan.png');
 
@@ -137,6 +138,15 @@ const ProfileScreen = ({navigation}: any) => {
     });
   };
 
+  const eventDetails = async ({item, index}: any) => {
+    await dispatch(getUsersByMyEventIdAsync(item.id));
+    await dispatch(getMyEventByIdAsync(item.id)).then((response: any) => {
+      if (response.payload?.status === 200) {
+        navigation.navigate('Details');
+      }
+    });
+  };
+
   const onRefreshCreatedList = () => {
     dispatch(getMyEventsByUserIdAsync(userId));
     setRefreshing(true);
@@ -188,6 +198,7 @@ const ProfileScreen = ({navigation}: any) => {
                   selectEvent={() => selectEvent({item})}
                   selectedEvent={selectedEvent}
                   leaveEvent={() => leaveEvent()}
+                  eventDetails={() => eventDetails({item})}
                 />
               );
             }}

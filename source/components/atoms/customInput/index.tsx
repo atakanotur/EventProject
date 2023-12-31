@@ -25,6 +25,7 @@ interface OwnProps {
   keyboardType?: KeyboardType;
   defaultValue?: any;
   secureTextEntry?: boolean;
+  editable?: boolean;
 }
 
 export type CustomInputProps = OwnProps & TextInputProps;
@@ -43,6 +44,7 @@ const CustomInput = (props: CustomInputProps) => {
     keyboardType,
     defaultValue,
     secureTextEntry,
+    editable
   } = props;
   return (
     <View style={[styles.containerStyle, containerStyle]}>
@@ -56,6 +58,7 @@ const CustomInput = (props: CustomInputProps) => {
         keyboardType={keyboardType}
         defaultValue={defaultValue}
         secureTextEntry={secureTextEntry}
+        editable={editable}
       />
     </View>
   );

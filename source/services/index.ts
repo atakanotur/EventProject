@@ -160,3 +160,9 @@ export const updateParticipant = async (participant: Participant) => {
   const endpoint = `${baseUrl}/Participants/update`;
   return await postResource(endpoint, participant);
 };
+
+//Users
+export const getUsersByMyEventId = async (myEventId: number) => {
+  const endpoint = `${baseUrl}/Users/getbymyeventid?myEventId=${myEventId}`;
+  return await getResource(endpoint);
+};

@@ -14,6 +14,7 @@ interface CustomButtonProps {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   textContainerStyle?: StyleProp<ViewStyle>;
+  disabled?: boolean;
 }
 
 const CustomButton = ({
@@ -22,9 +23,13 @@ const CustomButton = ({
   style,
   textStyle,
   textContainerStyle,
+  disabled,
 }: CustomButtonProps) => {
   return (
-    <TouchableOpacity style={style} onPress={() => onPress()}>
+    <TouchableOpacity
+      style={style}
+      onPress={() => onPress()}
+      disabled={disabled}>
       <Text
         text={text}
         style={[styles.text, textStyle]}

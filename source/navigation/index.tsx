@@ -11,6 +11,7 @@ import {
   ProfileScreen,
   CreateScreen,
   UpdateScreen,
+  DetailsScreen,
 } from '../screens';
 import colors from '../theme/colors';
 
@@ -20,6 +21,7 @@ const ProfileStack = createNativeStackNavigator();
 const EventStack = createNativeStackNavigator();
 const CreateStack = createNativeStackNavigator();
 const UpdateStack = createNativeStackNavigator();
+const DetailsStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
 
 const AuthNavigator = () => {
@@ -60,6 +62,14 @@ const UpdateNavigator = () => {
     <UpdateStack.Navigator screenOptions={{headerShown: false}}>
       <UpdateStack.Screen name="Update Event" component={UpdateScreen} />
     </UpdateStack.Navigator>
+  );
+};
+
+const DetailsNavigator = () => {
+  return (
+    <DetailsStack.Navigator screenOptions={{headerShown: false}}>
+      <DetailsStack.Screen name="Event Details" component={DetailsScreen} />
+    </DetailsStack.Navigator>
   );
 };
 
@@ -108,6 +118,11 @@ const RootNavigator = () => {
       <RootStack.Screen
         name="Update"
         component={UpdateNavigator}
+        options={{headerShown: false}}
+      />
+      <RootStack.Screen
+        name="Details"
+        component={DetailsNavigator}
         options={{headerShown: false}}
       />
     </RootStack.Navigator>

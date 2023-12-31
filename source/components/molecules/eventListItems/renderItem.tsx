@@ -22,6 +22,7 @@ interface EventListRenderItemProps {
   leaveEvent?: (item: any) => void;
   deleteEvent?: (item: any) => void;
   updateEvent?: (item: any) => void;
+  eventDetails?: (item: any) => void;
 }
 
 interface EventButtonProps {
@@ -39,6 +40,7 @@ export const EventListRenderItem = (props: EventListRenderItemProps) => {
     leaveEvent,
     deleteEvent,
     updateEvent,
+    eventDetails,
   } = props;
   const id = item.id;
   const containerHeight = useSharedValue(120);
@@ -128,11 +130,22 @@ export const EventListRenderItem = (props: EventListRenderItemProps) => {
             onPress={() => joinEvent(item)}
           />
         )}
-        {leaveEvent && (
-          <EventButton
-            buttonText="Leave Event"
-            onPress={() => leaveEvent(item)}
-          />
+        {leaveEvent && eventDetails && (
+          <Animated.View
+            style={{
+              flex: selectedEvent === id ? 10 : 0,
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+            }}>
+            <EventButton
+              buttonText="Event Details"
+              onPress={() => eventDetails(item)}
+            />
+            <EventButton
+              buttonText="Leave Event"
+              onPress={() => leaveEvent(item)}
+            />
+          </Animated.View>
         )}
         {deleteEvent && updateEvent && (
           <Animated.View
@@ -142,12 +155,12 @@ export const EventListRenderItem = (props: EventListRenderItemProps) => {
               justifyContent: 'space-evenly',
             }}>
             <EventButton
-              buttonText="Delete Event"
-              onPress={() => deleteEvent(item)}
-            />
-            <EventButton
               buttonText="Update Event"
               onPress={() => updateEvent(item)}
+            />
+            <EventButton
+              buttonText="Delete Event"
+              onPress={() => deleteEvent(item)}
             />
           </Animated.View>
         )}

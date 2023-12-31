@@ -44,6 +44,13 @@ export interface UserForRegister {
   lastName: string;
 }
 
+export interface UserProfileDetail {
+  userId: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
 export interface InitialStateBase {
   isLoading: boolean;
   error: any;

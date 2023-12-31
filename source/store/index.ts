@@ -4,6 +4,7 @@ import authSlice from './auth';
 import myEventsSlice from './myEvent';
 import myEventTypesSlice from './myEventType';
 import participantsSlice from './participant';
+import usersSlice from './user';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     myEvents: myEventsSlice,
     myEventTypes: myEventTypesSlice,
     participants: participantsSlice,
+    users: usersSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

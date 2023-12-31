@@ -40,7 +40,6 @@ export const styles = StyleSheet.create({
   },
   updateButton: {
     height: 50,
-    marginBottom: 10,
     backgroundColor: colors.red,
     borderRadius: 10,
   },
